@@ -13,14 +13,11 @@ A modern, glassmorphic infrastructure monitoring dashboard built with React. Thi
 
 ---
 
-## Screenshots
+## Demo
 
-| Dark Mode | Light Mode |
-|-----------|------------|
-| ![Dashboard Dark](screenshots/dashboard-dark.png) | ![Dashboard Light](screenshots/dashboard-light.png) |
-| ![Capacity Dark](screenshots/capacity-dark.png) | ![Capacity Light](screenshots/capacity-light.png) |
+👉 **[View Live Demo](https://syedsinan321.github.io/infra-monitoring-dashboard/)**
 
-> **Tip:** To add your own screenshots, take screenshots of the app and save them in a `screenshots/` folder at the project root.
+The dashboard includes dark/light mode toggle, animated backgrounds, and glassmorphic UI panels. Navigate between six pages using the sidebar.
 
 ---
 
