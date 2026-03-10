@@ -1,11 +1,26 @@
 # Infra Monitoring Dashboard
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-2ea44f?logo=github)](https://syedsinan321.github.io/infra-monitoring-dashboard/)
+[![GitHub Repo](https://img.shields.io/badge/Source_Code-GitHub-181717?logo=github)](https://github.com/syedsinan321/infra-monitoring-dashboard)
+
 A modern, glassmorphic infrastructure monitoring dashboard built with React. This is a fully static demo application that uses mock data to showcase a unified view of datacenter infrastructure — from UCS chassis and blade servers to VMware capacity planning and TPM key management.
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
 ![Recharts](https://img.shields.io/badge/Recharts-2-FF6384)
+
+
+---
+
+## Screenshots
+
+| Dark Mode | Light Mode |
+|-----------|------------|
+| ![Dashboard Dark](screenshots/dashboard-dark.png) | ![Dashboard Light](screenshots/dashboard-light.png) |
+| ![Capacity Dark](screenshots/capacity-dark.png) | ![Capacity Light](screenshots/capacity-light.png) |
+
+> **Tip:** To add your own screenshots, take screenshots of the app and save them in a `screenshots/` folder at the project root.
 
 ---
 

@@ -3,10 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "homepage": "https://syedsinan321.github.io/infra-monitoring-dashboard/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "lucide-react": "^0.312.0",
@@ -21,6 +23,7 @@
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
     "vite": "^5.0.12"
