@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { SidebarProvider } from './SidebarContext';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -37,7 +37,7 @@ function App() {
   if (error) return <ErrorMessage message={error} onRetry={loadDashboard} />;
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <SidebarProvider>
         <Layout>
           <Routes>
@@ -58,7 +58,7 @@ function App() {
           </Routes>
         </Layout>
       </SidebarProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
