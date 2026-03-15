@@ -50,7 +50,7 @@ This project implements a complete CI/CD pipeline using Jenkins, Docker, and aut
 ### Pipeline Architecture
 
 ```mermaid
-graph LR
+graph TD
     A[Git Push] --> B[Jenkins Detects Change]
     B --> C[Checkout Code]
     C --> D[Install Dependencies]
