@@ -43,6 +43,183 @@ All data in this demo is generated client-side using realistic mock data — no 
 
 ---
 
+## CI/CD Pipeline
+
+This project implements a complete CI/CD pipeline using Jenkins, Docker, and automated testing to demonstrate DevOps best practices.
+
+### Pipeline Architecture
+
+```mermaid
+graph LR
+    A[Git Push] --> B[Jenkins Detects Change]
+    B --> C[Checkout Code]
+    C --> D[Install Dependencies]
+    D --> E[ESLint Code Quality]
+    E --> F[Run Tests]
+    F --> G[Build Production]
+    G --> H[Docker Build]
+    H --> I[Archive Artifacts]
+    I --> J[Deploy Ready]
+    
+    style A fill:#4CAF50
+    style B fill:#2196F3
+    style C fill:#2196F3
+    style D fill:#2196F3
+    style E fill:#FF9800
+    style F fill:#FF9800
+    style G fill:#9C27B0
+    style H fill:#00BCD4
+    style I fill:#795548
+    style J fill:#4CAF50
+```
+
+### Pipeline Stages
+
+| Stage | Description | Tools | Duration |
+|-------|-------------|-------|----------|
+| **Checkout** | Clone repository from GitHub | Git | ~2s |
+| **Install Dependencies** | Install npm packages with legacy peer deps | npm | ~3s |
+| **Lint** | Code quality checks with ESLint | ESLint 10 | ~1s |
+| **Test** | Run unit/integration tests | npm test | <1s |
+| **Build** | Create optimized production bundle | Vite | ~2s |
+| **Docker Build** | Containerize application | Docker | ~45s |
+| **Archive Artifacts** | Save build files in Jenkins | Jenkins | ~1s |
+
+### Build Metrics
+
+- **Total Pipeline Duration:** ~55 seconds
+- **Production Bundle Size:** 710 KB (193 KB gzipped)
+- **Docker Image Size:** ~50 MB (multi-stage build)
+- **Code Quality:** 0 errors, 22 warnings (non-blocking)
+
+### CI/CD Workflow
+
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant Git as GitHub
+    participant Jenkins as Jenkins
+    participant Docker as Docker Engine
+    participant Artifacts as Build Artifacts
+    
+    Dev->>Git: git push
+    Git-->>Jenkins: Webhook/Poll trigger
+    Jenkins->>Git: Clone repository
+    Jenkins->>Jenkins: Install dependencies
+    Jenkins->>Jenkins: Run ESLint
+    Jenkins->>Jenkins: Run tests
+    Jenkins->>Jenkins: Build with Vite
+    Jenkins->>Docker: Build Docker image
+    Docker-->>Jenkins: Image created
+    Jenkins->>Artifacts: Archive dist/ folder
+    Jenkins-->>Dev: Build status notification
+```
+
+### Infrastructure as Code
+
+The entire pipeline is defined in `Jenkinsfile` using declarative syntax:
+
+- **Version controlled** - Pipeline configuration lives in Git
+- **Reproducible** - Same build process every time
+- **Auditable** - Full history of pipeline changes
+- **Portable** - Can be deployed to any Jenkins instance
+
+### Docker Multi-Stage Build
+
+The `Dockerfile` uses a two-stage build process:
+
+1. **Build Stage** - Node.js 18 Alpine for building the React app
+2. **Production Stage** - Nginx Alpine for serving static files
+
+This reduces the final image size by ~80% compared to single-stage builds.
+
+### Running the Pipeline Locally
+
+#### Prerequisites
+
+- Docker Desktop installed
+- Git configured
+
+#### Setup Jenkins
+
+```bash
+# Create Docker network
+docker network create jenkins
+
+# Run Jenkins container
+docker run -d \
+  --name jenkins \
+  --network jenkins \
+  -p 8080:8080 \
+  -p 50000:50000 \
+  -v jenkins_home:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --user root \
+  jenkins/jenkins:lts
+
+# Install Docker in Jenkins
+docker exec -u root jenkins apt-get update
+docker exec -u root jenkins apt-get install -y docker.io
+docker restart jenkins
+
+# Get initial admin password
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+#### Configure Jenkins Job
+
+1. Open `http://localhost:8080` and complete setup wizard
+2. Install suggested plugins + NodeJS plugin
+3. Configure NodeJS 20 LTS in **Manage Jenkins** → **Tools**
+4. Create new Pipeline job pointing to this repository
+5. Set polling schedule: `H/5 * * * *` (checks every 5 minutes)
+
+#### Trigger Builds
+
+Builds are triggered automatically when you push to GitHub (via polling):
+
+```bash
+git add .
+git commit -m "Your changes"
+git push
+```
+
+Jenkins will detect the change within 5 minutes and start a new build.
+
+### Build Artifacts
+
+After each successful build, Jenkins archives:
+
+- Production-ready static files (`dist/` folder)
+- Docker image tagged with build number
+- Build logs and test results
+
+Access artifacts via Jenkins UI → Build → Artifacts
+
+### Running with Docker
+
+```bash
+# Build the Docker image
+docker build -t infra-dashboard .
+
+# Run the container
+docker run -p 3000:80 infra-dashboard
+
+# Access at http://localhost:3000
+```
+
+### DevOps Best Practices Demonstrated
+
+✅ **Infrastructure as Code** - Jenkinsfile and Dockerfile in version control  
+✅ **Automated Testing** - ESLint and test stages prevent bad code from deploying  
+✅ **Containerization** - Docker ensures consistent deployments across environments  
+✅ **Build Versioning** - Each build tagged with unique number  
+✅ **Artifact Management** - Build outputs archived for rollback capability  
+✅ **Clean Builds** - Workspace cleanup prevents contamination  
+✅ **Multi-Stage Builds** - Optimized Docker images for production  
+
+---
+
 ## Features
 
 ### Infrastructure Dashboard
