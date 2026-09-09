@@ -1,0 +1,623 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light mode overrides — medium gray bg, light blue cards, dark fonts */
+@layer base {
+  /* Page backgrounds → medium gray; cards → light blue */
+  :root:not(.dark) .bg-white { background-color: #dfe3e8 !important; }
+  :root:not(.dark) .bg-white\/70 { background-color: rgba(214, 228, 245, 0.85) !important; }
+  :root:not(.dark) .bg-white\/80 { background-color: rgba(214, 228, 245, 0.9) !important; }
+  :root:not(.dark) .bg-white\/95 { background-color: rgba(214, 228, 245, 0.97) !important; }
+  :root:not(.dark) .bg-white\/50 { background-color: rgba(214, 228, 245, 0.7) !important; }
+  :root:not(.dark) .bg-slate-50 { background-color: #e8ecf0 !important; }
+  :root:not(.dark) .bg-slate-100 { background-color: #dce4ed !important; }
+  :root:not(.dark) .bg-slate-200 { background-color: #d0d8e2 !important; }
+
+  /* Borders → cool gray-blue */
+  :root:not(.dark) .border-slate-200 { border-color: #b8c4d0 !important; }
+  :root:not(.dark) .border-slate-300 { border-color: #a3b1c0 !important; }
+  :root:not(.dark) .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: #b8c4d0 !important; }
+
+  /* Clickable cards — obvious highlight on hover (inside the layer so it can
+     out-rank the !important surface remaps above via higher specificity). */
+  :root:not(.dark) .card-clickable:hover {
+    background-color: rgba(199, 221, 248, 0.92) !important;
+    border-color: rgba(59, 130, 246, 0.55) !important;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.18);
+  }
+
+  /* Hover states */
+  :root:not(.dark) .hover\:bg-slate-100:hover { background-color: #d0dae6 !important; }
+  :root:not(.dark) .hover\:bg-slate-200\/50:hover { background-color: rgba(208, 216, 226, 0.5) !important; }
+  :root:not(.dark) .hover\:bg-slate-200:hover { background-color: #c8d2de !important; }
+  :root:not(.dark) .hover\:bg-slate-300:hover { background-color: #b8c4d0 !important; }
+
+  /* Placeholders */
+  :root:not(.dark) .placeholder-slate-400::placeholder { color: #8494a7 !important; }
+
+  /* Text — darker for readability */
+  :root:not(.dark) .text-slate-900 { color: #0f172a !important; }
+  :root:not(.dark) .text-slate-700 { color: #1e293b !important; }
+  :root:not(.dark) .text-slate-600 { color: #334155 !important; }
+  :root:not(.dark) .text-slate-500 { color: #475569 !important; }
+  :root:not(.dark) .text-slate-400 { color: #64748b !important; }
+  :root:not(.dark) .text-slate-300 { color: #334155 !important; }
+  :root:not(.dark) .text-slate-200 { color: #1e293b !important; }
+
+  /* Accent text colors → darker -700 shades in light mode for readability */
+  :root:not(.dark) .text-green-400 { color: #15803d !important; }
+  :root:not(.dark) .text-green-300 { color: #16a34a !important; }
+  :root:not(.dark) .text-emerald-400 { color: #047857 !important; }
+  :root:not(.dark) .text-emerald-300 { color: #059669 !important; }
+  :root:not(.dark) .text-blue-400 { color: #1d4ed8 !important; }
+  :root:not(.dark) .text-blue-300 { color: #2563eb !important; }
+  :root:not(.dark) .text-cyan-400 { color: #0e7490 !important; }
+  :root:not(.dark) .text-cyan-300 { color: #0891b2 !important; }
+  :root:not(.dark) .text-purple-400 { color: #7e22ce !important; }
+  :root:not(.dark) .text-purple-300 { color: #9333ea !important; }
+  :root:not(.dark) .text-amber-400 { color: #b45309 !important; }
+  :root:not(.dark) .text-amber-300 { color: #d97706 !important; }
+  :root:not(.dark) .text-yellow-400 { color: #a16207 !important; }
+  :root:not(.dark) .text-yellow-300 { color: #ca8a04 !important; }
+  :root:not(.dark) .text-red-400 { color: #b91c1c !important; }
+  :root:not(.dark) .text-red-300 { color: #dc2626 !important; }
+  :root:not(.dark) .text-orange-400 { color: #c2410c !important; }
+  :root:not(.dark) .text-orange-300 { color: #ea580c !important; }
+  :root:not(.dark) .text-pink-400 { color: #be185d !important; }
+  :root:not(.dark) .text-pink-300 { color: #db2777 !important; }
+  :root:not(.dark) .text-sky-400 { color: #0369a1 !important; }
+  :root:not(.dark) .text-sky-300 { color: #0284c7 !important; }
+  :root:not(.dark) .text-teal-400 { color: #0f766e !important; }
+  :root:not(.dark) .text-teal-300 { color: #0d9488 !important; }
+  :root:not(.dark) .text-violet-400 { color: #6d28d9 !important; }
+  :root:not(.dark) .text-violet-300 { color: #7c3aed !important; }
+  :root:not(.dark) .text-indigo-400 { color: #4338ca !important; }
+  :root:not(.dark) .text-indigo-300 { color: #4f46e5 !important; }
+  :root:not(.dark) .text-rose-400 { color: #be123c !important; }
+  :root:not(.dark) .text-rose-300 { color: #e11d48 !important; }
+
+  /* Accent text -500 shades → darker in light mode */
+  :root:not(.dark) .text-green-500 { color: #15803d !important; }
+  :root:not(.dark) .text-emerald-500 { color: #047857 !important; }
+  :root:not(.dark) .text-blue-500 { color: #1d4ed8 !important; }
+  :root:not(.dark) .text-cyan-500 { color: #0e7490 !important; }
+  :root:not(.dark) .text-purple-500 { color: #7e22ce !important; }
+  :root:not(.dark) .text-amber-500 { color: #92400e !important; }
+  :root:not(.dark) .text-yellow-500 { color: #854d0e !important; }
+  :root:not(.dark) .text-red-500 { color: #b91c1c !important; }
+  :root:not(.dark) .text-orange-500 { color: #c2410c !important; }
+  :root:not(.dark) .text-pink-500 { color: #be185d !important; }
+  :root:not(.dark) .text-sky-500 { color: #0369a1 !important; }
+  :root:not(.dark) .text-teal-500 { color: #0f766e !important; }
+  :root:not(.dark) .text-violet-500 { color: #6d28d9 !important; }
+  :root:not(.dark) .text-indigo-500 { color: #4338ca !important; }
+  :root:not(.dark) .text-rose-500 { color: #be123c !important; }
+
+  /* Accent background overrides for light mode */
+  :root:not(.dark) .bg-red-900\/10 { background-color: rgba(254, 226, 226, 0.6) !important; }
+  :root:not(.dark) .bg-red-900\/20 { background-color: rgba(254, 226, 226, 0.8) !important; }
+  :root:not(.dark) .bg-green-900\/10 { background-color: rgba(220, 252, 231, 0.6) !important; }
+  :root:not(.dark) .bg-red-600\/20 { background-color: rgba(254, 226, 226, 0.6) !important; }
+
+  /* Glass inner elements — invert white utilities to dark tints in light mode */
+  :root:not(.dark) .border-white\/5 { border-color: rgba(0, 0, 0, 0.05) !important; }
+  :root:not(.dark) .border-white\/10 { border-color: rgba(0, 0, 0, 0.08) !important; }
+  :root:not(.dark) .border-white\/20 { border-color: rgba(0, 0, 0, 0.12) !important; }
+  :root:not(.dark) .border-white\/30 { border-color: rgba(0, 0, 0, 0.15) !important; }
+  :root:not(.dark) .divide-white\/5 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(0, 0, 0, 0.05) !important; }
+  :root:not(.dark) .divide-white\/10 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(0, 0, 0, 0.08) !important; }
+
+  /* Select dropdowns */
+  :root:not(.dark) select option { background-color: #dfe3e8; }
+
+  /* Gradients */
+  :root:not(.dark) .from-slate-100 { --tw-gradient-from: #d5dde6 !important; }
+  :root:not(.dark) .via-white { --tw-gradient-via: #dfe3e8 !important; }
+  :root:not(.dark) .to-slate-100 { --tw-gradient-to: #d5dde6 !important; }
+}
+
+/* Light mode (default) — medium gray palette with dark fonts */
+:root {
+  --bg-primary: #d5dbe2;
+  --bg-secondary: #cdd4dc;
+  --bg-tertiary: #c2cad4;
+  --border-color: #b0bbc8;
+  --border-accent: #8d9bac;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+  --accent-purple: #8b5cf6;
+  --accent-amber: #f59e0b;
+  --text-primary: #0f172a;
+  --text-secondary: #1e293b;
+  --text-muted: #475569;
+  /* Liquid glass */
+  --glass-bg: rgba(255, 255, 255, 0.50);
+  --glass-bg-hover: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-border-subtle: rgba(255, 255, 255, 0.35);
+  --glass-highlight: rgba(255, 255, 255, 0.8);
+  --glass-shadow: rgba(0, 0, 0, 0.12);
+  --glass-blur: 20px;
+}
+
+/* Dark mode — Steel Blue design system (light mode untouched) */
+.dark {
+  --bg-primary: #0b0b10;
+  --bg-secondary: #101017;   /* sidebar */
+  --bg-tertiary: #1d1d29;    /* cards */
+  --border-color: #26262f;
+  --border-accent: #34353f;
+  --hairline: #22222c;
+  --accent-blue: #0086ea;
+  --accent-cyan: #4da9f0;
+  --accent-emerald: #39a283;
+  --accent-purple: #b57ce6;
+  --accent-amber: #e8683a;
+  --text-primary: #f7f7fc;
+  --text-secondary: #c9cad9;
+  --text-muted: #a3a4b7;
+  --text-disabled: #6f7086;
+  --site1-accent: #4da9f0;
+  --site2-accent: #b57ce6;
+  --status-ok: #39a283;
+  --status-warn: #e8683a;
+  --status-err: #ff5254;
+  --status-neutral: #4a4b5c;
+  /* Liquid glass → Steel Blue glass: translucent cards over the live background */
+  --glass-bg: rgba(32, 32, 43, 0.72);
+  --glass-bg-hover: rgba(38, 38, 50, 0.82);
+  --glass-border: #26262f;
+  --glass-border-subtle: #22222c;
+  --glass-highlight: rgba(255, 255, 255, 0.04);
+  --glass-shadow: rgba(0, 0, 0, 0.35);
+  --glass-blur: 16px;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-accent);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+/* Glassmorphism effect */
+.glass {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass {
+  background: rgba(17, 24, 39, 0.8);
+}
+
+:root:not(.dark) .glass {
+  background: rgba(213, 219, 226, 0.8);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtle glow effects */
+.glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4, #8b5cf6);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+}
+
+/* ── LIQUID GLASS PANELS ── */
+.liquid-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-highlight),
+    0 4px 24px -4px var(--glass-shadow),
+    0 1px 3px 0 var(--glass-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.liquid-glass:hover {
+  background: var(--glass-bg-hover);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-highlight),
+    0 8px 40px -8px var(--glass-shadow),
+    0 2px 6px 0 var(--glass-shadow);
+}
+
+/* Prismatic shimmer top edge */
+.liquid-glass-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.4) 15%,
+    rgba(6, 182, 212, 0.4) 30%,
+    rgba(139, 92, 246, 0.4) 50%,
+    rgba(236, 72, 153, 0.3) 70%,
+    rgba(245, 158, 11, 0.3) 85%,
+    transparent 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+:root:not(.dark) .liquid-glass-shimmer::before {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.55) 15%,
+    rgba(6, 182, 212, 0.55) 30%,
+    rgba(139, 92, 246, 0.50) 50%,
+    rgba(236, 72, 153, 0.45) 70%,
+    rgba(245, 158, 11, 0.45) 85%,
+    transparent 100%
+  );
+}
+
+/* Ambient mesh background for liquid glass refraction */
+.liquid-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(139, 92, 246, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 90%, rgba(6, 182, 212, 0.08) 0%, transparent 60%),
+    var(--bg-primary);
+}
+
+.dark .liquid-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 90%, rgba(6, 182, 212, 0.05) 0%, transparent 60%),
+    var(--bg-primary);
+}
+
+/* Sidebar ambient orb animations */
+@keyframes sidebarOrb1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%      { transform: translate(30px, 40px) scale(1.1); }
+  50%      { transform: translate(-20px, 80px) scale(0.95); }
+  75%      { transform: translate(15px, 20px) scale(1.05); }
+}
+
+@keyframes sidebarOrb2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%      { transform: translate(-35px, 30px) scale(1.08); }
+  50%      { transform: translate(20px, -40px) scale(0.92); }
+  75%      { transform: translate(-10px, 50px) scale(1.12); }
+}
+
+@keyframes sidebarOrb3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(25px, -35px) scale(1.15); }
+  66%      { transform: translate(-30px, 25px) scale(0.9); }
+}
+
+@keyframes sidebarOrb4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20%      { transform: translate(-20px, -30px) scale(1.1); }
+  50%      { transform: translate(30px, 20px) scale(0.95); }
+  80%      { transform: translate(-15px, 40px) scale(1.05); }
+}
+
+/* --- AI Diagnostics (flagship) utilities ---------------------------------- */
+
+/* Flat premium surface — replaces liquid-glass on the AI Diagnostics page. */
+.ai-surface {
+  background: rgba(214, 228, 245, 0.85);
+  border: 1px solid #b8c4d0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.dark .ai-surface {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* KPI hover tooltip — deliberately solid (no glass/translucency) so the
+   affected-hosts list stays readable over whatever sits underneath it. */
+.kpi-tooltip { background-color: #ffffff !important; }
+.dark .kpi-tooltip { background-color: #0e1526 !important; }
+
+/* Slow continuous spin for the Claude starburst logo */
+@keyframes claudeSparkSpin {
+  to { transform: rotate(360deg); }
+}
+.claude-spark-spin {
+  animation: claudeSparkSpin 10s linear infinite;
+  transform-origin: 50% 50%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .claude-spark-spin { animation: none; }
+}
+
+/* Section transition when switching Servers / History / Claude Usage */
+@keyframes aiFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ai-fade-in {
+  animation: aiFadeIn 0.25s ease-out both;
+}
+
+/* Violet→indigo gradient accents for the AI experience */
+.ai-gradient-text {
+  background: linear-gradient(90deg, #a78bfa, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ai-gradient-btn {
+  background-image: linear-gradient(90deg, #7c3aed, #4f46e5);
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+.ai-gradient-btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+}
+
+/* Soft breathing glow behind the analyzing spinner */
+@keyframes aiGlow {
+  0%, 100% { box-shadow: 0 0 24px 4px rgba(139, 92, 246, 0.25); }
+  50%      { box-shadow: 0 0 42px 10px rgba(99, 102, 241, 0.4); }
+}
+.ai-glow {
+  animation: aiGlow 2.4s ease-in-out infinite;
+}
+
+/* Breathing glow for the Intersight Topology banner on the dashboard */
+@keyframes topologyGlow {
+  0%, 100% { box-shadow: 0 0 22px 3px rgba(6, 182, 212, 0.22); }
+  50%      { box-shadow: 0 0 40px 9px rgba(59, 130, 246, 0.32); }
+}
+.topology-glow {
+  animation: topologyGlow 2.8s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   STEEL BLUE — dark mode only. Light mode is untouched: every rule
+   below is scoped under .dark. Mirrors the light-mode remap layer above.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* Roobert (dark mode display face). Files live in /fonts (public dir) so a
+   missing file degrades to Inter instead of breaking the build. */
+@font-face {
+  font-family: 'Roobert';
+  src: url('/fonts/Roobert-Light.otf') format('opentype');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Roobert';
+  src: url('/fonts/Roobert-Regular.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Roobert';
+  src: url('/fonts/Roobert-Medium.otf') format('opentype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Roobert';
+  src: url('/fonts/Roobert-SemiBold.otf') format('opentype');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+
+.dark body {
+  font-family: 'Roobert', 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* ── Page + sidebar ─────────────────────────────────────────────────── */
+.dark .liquid-bg {
+  background:
+    radial-gradient(80% 320px at 50% 0%, rgba(153, 207, 247, 0.08), rgba(203, 192, 218, 0.03)),
+    #0b0b10;
+}
+.dark aside.liquid-glass { background: rgba(16, 16, 23, 0.8); }
+
+/* ── Glass panels: subtle blur, hairline borders, no shimmer, no lift ──── */
+.dark .liquid-glass {
+  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+              border-color 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+.dark .liquid-glass-shimmer::before { display: none; }
+.dark .card-hover { transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1); }
+.dark .card-hover:hover { transform: none; box-shadow: none; }
+.dark .ai-surface {
+  background: rgba(32, 32, 43, 0.76);
+  border-color: #26262f;
+  border-radius: 12px;
+}
+
+/* ── Surfaces (Tailwind dark: utilities → Steel Blue) ──────────────────── */
+.dark [class*="dark:bg-slate-900"] { background-color: rgba(32, 32, 43, 0.80) !important; }
+.dark [class*="dark:bg-slate-900/95"] { background-color: rgba(28, 28, 38, 0.95) !important; }
+.dark [class*="dark:bg-slate-950"] { background-color: rgba(28, 28, 38, 0.95) !important; }
+.dark [class*="dark:bg-white/["]   { background-color: #1b1b24 !important; }
+.dark [class*="dark:bg-white/5"]   { background-color: #1b1b24 !important; }
+.dark [class*="dark:bg-white/10"]  { background-color: #20202b !important; }
+.dark [class*="dark:bg-white/15"]  { background-color: #23232e !important; }
+.dark .bg-black\/20, .dark .bg-black\/40 { background-color: #0d0d13 !important; }
+.dark [class*="dark:hover:bg-white"]:hover { background-color: #101017 !important; }
+.dark [class*="dark:hover:bg-slate-700"]:hover { background-color: #101017 !important; }
+
+/* Borders + hairline dividers */
+.dark [class*="dark:border-white/"] { border-color: #26262f !important; }
+.dark [class*="dark:border-slate-700"] { border-color: #26262f !important; }
+.dark .border-white\/5, .dark .border-white\/10,
+.dark .border-white\/20, .dark .border-white\/30 { border-color: #26262f !important; }
+.dark [class*="dark:divide-white/"] > :not([hidden]) ~ :not([hidden]),
+.dark .divide-white\/5  > :not([hidden]) ~ :not([hidden]),
+.dark .divide-white\/10 > :not([hidden]) ~ :not([hidden]) { border-color: #22222c !important; }
+
+/* ── Text tiers ─────────────────────────────────────────────────────── */
+.dark [class*="dark:text-white"] { color: #f7f7fc !important; }
+.dark [class*="dark:text-slate-100"],
+.dark [class*="dark:text-slate-200"],
+.dark [class*="dark:text-slate-300"] { color: #c9cad9 !important; }
+.dark [class*="dark:text-slate-400"],
+.dark [class*="dark:text-slate-500"] { color: #a3a4b7 !important; }
+.dark .text-slate-400, .dark .text-slate-500 { color: #a3a4b7 !important; }
+.dark .text-slate-600 { color: #6f7086 !important; }
+.dark .placeholder-slate-400::placeholder,
+.dark [class*="dark:placeholder-slate-500"]::placeholder { color: #6f7086 !important; }
+
+/* ── Primary action + links + active nav ───────────────────────────────── */
+.dark .bg-blue-600 { background-color: #0086ea !important; }
+.dark .hover\:bg-blue-500:hover { background-color: #006dc7 !important; }
+.dark .bg-blue-500 { background-color: #0086ea !important; }
+.dark .hover\:bg-blue-600:hover { background-color: #006dc7 !important; }
+.dark [class*="dark:bg-blue-500/15"] { background-color: rgba(0, 134, 234, 0.16) !important; }
+.dark [class*="dark:text-blue-300"],
+.dark [class*="dark:text-blue-400"],
+.dark .text-blue-400, .dark .text-blue-500 { color: #4da9f0 !important; }
+
+/* ── Status colors ──────────────────────────────────────────────────── */
+.dark .text-emerald-300, .dark .text-emerald-400, .dark .text-emerald-500,
+.dark .text-green-300, .dark .text-green-400, .dark .text-green-500,
+.dark [class*="dark:text-emerald-400"], .dark [class*="dark:text-green-400"] { color: #39a283 !important; }
+.dark .bg-emerald-400, .dark .bg-emerald-500,
+.dark .bg-green-400, .dark .bg-green-500 { background-color: #39a283 !important; }
+.dark .hover\:bg-emerald-600:hover, .dark .hover\:bg-green-600:hover { background-color: #2e8168 !important; }
+
+.dark .text-amber-300, .dark .text-amber-400, .dark .text-amber-500,
+.dark .text-orange-300, .dark .text-orange-400, .dark .text-orange-500,
+.dark .text-yellow-400, .dark [class*="dark:text-amber-400"],
+.dark [class*="dark:text-orange-400"] { color: #e8683a !important; }
+.dark .bg-amber-400, .dark .bg-amber-500, .dark .bg-orange-400, .dark .bg-orange-500 { background-color: #e8683a !important; }
+
+.dark .text-red-300, .dark .text-red-400, .dark .text-red-500,
+.dark [class*="dark:text-red-400"] { color: #ff5254 !important; }
+.dark .bg-red-400, .dark .bg-red-500 { background-color: #ff5254 !important; }
+.dark .hover\:bg-red-500:hover { background-color: #d94547 !important; }
+
+.dark .bg-slate-400 { background-color: #4a4b5c !important; }  /* standby dots */
+
+/* Datacenter accents — SITE1 sky → #4da9f0, SITE2 violet → #b57ce6 */
+.dark .text-sky-300, .dark .text-sky-400, .dark .text-sky-500,
+.dark [class*="dark:text-sky-400"] { color: var(--site1-accent) !important; }
+.dark .bg-sky-400, .dark .bg-sky-500 { background-color: var(--site1-accent) !important; }
+.dark .text-violet-300, .dark .text-violet-400, .dark .text-violet-500,
+.dark [class*="dark:text-violet-300"], .dark [class*="dark:text-violet-400"] { color: var(--site2-accent) !important; }
+.dark .bg-violet-400 { background-color: var(--site2-accent) !important; }
+
+/* ── Typography scale ──────────────────────────────────────────────────
+   Unscoped: identical sizes in light and dark so switching themes never
+   changes how big anything renders. Dark only swaps the font family. */
+.page-title { font-size: 32px; font-weight: 300; letter-spacing: -0.01em; line-height: 1.15; }
+.kpi-value  { font-size: 36px; font-weight: 300; line-height: 1.15; letter-spacing: -0.01em; }
+.micro-label { font-size: 12px; }
+/* Per the Steel Blue reference: KPI/card labels sentence case, section
+   headers stay uppercase + letterspaced. */
+.dark .micro-label { font-weight: 500; text-transform: none; letter-spacing: 0.02em; }
+.dark .section-label { text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+
+/* ── Badges & pills ─────────────────────────────────────────────────── */
+.dark .ui-badge { border-radius: 9999px; }
+.dark [class*="bg-slate-500/10"] { background-color: #22222c !important; }
+.dark [class*="border-slate-500/25"], .dark [class*="border-slate-500/30"] { border-color: #2c2c37 !important; }
+
+/* ── Featured "Run AI Diagnostics" quick action ────────────────────────── */
+.dark .qa-featured {
+  background: linear-gradient(135deg, #8212c4, #1629b4) !important;
+  border-color: transparent !important;
+}
+.dark .qa-featured:hover { filter: brightness(0.92); }
+.dark .qa-featured p, .dark .qa-featured svg { color: #ffffff !important; }
+.dark .qa-featured .qa-desc { color: rgba(255, 255, 255, 0.75) !important; }
+.dark .qa-featured .qa-tile { background: rgba(255, 255, 255, 0.16) !important; }
+
+/* ── Motion ─────────────────────────────────────────────────────────── */
+.dark button, .dark a, .dark select, .dark input, .dark textarea {
+  transition-duration: 120ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+.dark .ai-fade-in { animation-duration: 200ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1); }
+
+/* Scrollbar + form controls on Steel Blue */
+.dark ::-webkit-scrollbar-track { background: #101017; }
+.dark ::-webkit-scrollbar-thumb { background: #34353f; }
+.dark select option { background-color: #16161f; }
+
+/* Clickable cards — blue-tinted highlight on hover (beats the surface remaps
+   above by specificity; background-color leaves the qa-featured gradient intact) */
+.dark .card-clickable:hover {
+  background-color: rgba(15, 39, 66, 0.78) !important;  /* card glass, blue-shifted */
+  border-color: rgba(0, 134, 234, 0.55) !important;
+  box-shadow: 0 4px 24px rgba(0, 134, 234, 0.20);
+}
+
+/* Unify root background (no gaps above/below the app shell) */
+html { background: var(--bg-primary); }
