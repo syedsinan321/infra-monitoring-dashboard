@@ -53,8 +53,8 @@ function toRows(results) {
 const GROUPS = [
   {
     key: 'live',
-    title: 'In Intersight',
-    hint: 'live hardware Intersight is managing',
+    title: 'In Vantage',
+    hint: 'live hardware Vantage is managing',
     match: r => !r.source || r.source === 'vCenter',
     tone: 'emerald',
     icon: CheckCircle,
@@ -70,7 +70,7 @@ const GROUPS = [
   {
     key: 'spare',
     title: 'Spare inventory',
-    hint: 'tracked by hand on the Inventory page, never seen by Intersight',
+    hint: 'tracked by hand on the Inventory page, never seen by Vantage',
     match: r => r.source === 'Spare inventory',
     tone: 'blue',
     icon: Package,
@@ -278,7 +278,7 @@ export default function HardwareLookup({ onClose }) {
             <div>
               <h2 className="text-base font-semibold text-slate-900 dark:text-white">Hardware lookup</h2>
               <p className="text-xs text-slate-500 mt-0.5">
-                Paste serials, names, models, or profiles — checks Intersight, spare inventory and decommissioned records, with vCenter as fallback.
+                Paste serials, names, models, or profiles — checks Vantage, spare inventory and decommissioned records, with vCenter as fallback.
               </p>
             </div>
           </div>
@@ -369,7 +369,7 @@ export default function HardwareLookup({ onClose }) {
                     <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />
                     <p className="text-sm font-semibold text-red-600 dark:text-red-400">Not found ({missingRows.length})</p>
                     <p className="text-xs text-slate-500">
-                      no match in Intersight, spare inventory, decommissioned records or vCenter — likely not on hand
+                      no match in Vantage, spare inventory, decommissioned records or vCenter — likely not on hand
                     </p>
                   </div>
                   <div className="px-4 py-3 flex flex-wrap gap-2 max-h-28 overflow-y-auto">

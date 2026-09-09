@@ -23,7 +23,7 @@ function LoadingSpinner() {
                style={{ animation: 'loading-bar 1.5s ease-in-out infinite' }} />
         </div>
 
-        <p className="mt-4 text-slate-500 dark:text-slate-400 font-medium">Loading Intersight data...</p>
+        <p className="mt-4 text-slate-500 dark:text-slate-400 font-medium">Loading Vantage data...</p>
         <p className="mt-1 text-sm text-slate-400 dark:text-slate-600">Connecting to infrastructure</p>
       </div>
 

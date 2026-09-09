@@ -200,7 +200,7 @@ export default function AnalysisReport({
   }
 
   const sourcesLabel = (sources || [])
-    .map(s => (s === 'intersight' ? 'Intersight' : s === 'vcenter' ? 'vCenter' : s))
+    .map(s => (s === 'vantage' ? 'Vantage' : s === 'vcenter' ? 'vCenter' : s))
     .join(' + ');
 
   return (

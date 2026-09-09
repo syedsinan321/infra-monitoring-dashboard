@@ -6,7 +6,7 @@ import { loadDeviceIndex } from '../deviceIndex';
 import DeviceDetailModal from './DeviceDetailModal';
 
 /**
- * Global device search — indexes Intersight blades, vCenter-only hosts, and
+ * Global device search — indexes Vantage blades, vCenter-only hosts, and
  * fabric interconnects. Selecting a device opens the shared detail card;
  * hosts link onward to Host Diagnostics.
  */
@@ -188,7 +188,7 @@ function GlobalSearch({ collapsed }) {
         document.body
       )}
 
-      {/* Device detail — shared card, includes live Intersight/vCenter alerts */}
+      {/* Device detail — shared card, includes live Vantage/vCenter alerts */}
       {open && detail && (
         <DeviceDetailModal
           device={detail}

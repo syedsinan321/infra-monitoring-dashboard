@@ -129,7 +129,7 @@ function ChassisSection({ chassis, blades }) {
         <div className="divide-y divide-slate-200/60 dark:divide-white/[0.05]">
           {domainGroups.length === 0 ? (
             <div className="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
-              No chassis found in your Intersight environment
+              No chassis found in your Vantage environment
             </div>
           ) : (
             domainGroups.map((domain) => {
@@ -280,16 +280,16 @@ function ChassisSection({ chassis, blades }) {
                           {ch.oper_state || 'Unknown'}
                         </Badge>
                         <a
-                          href={`https://us-east-1.intersight.com/an/infrastructure-service/an/network/chassis/${ch.moid}`}
+                          href={`https://us-east-1.vantage.example.com/an/infrastructure-service/an/network/chassis/${ch.moid}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium
                             border border-slate-300/70 dark:border-white/[0.1] text-slate-600 dark:text-slate-300
                             hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                          title="Open this chassis in Intersight"
+                          title="Open this chassis in Vantage"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          Intersight
+                          Vantage
                         </a>
                       </div>
                     </div>

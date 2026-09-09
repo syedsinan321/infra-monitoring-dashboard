@@ -33,7 +33,7 @@ function mockDownloadHref() {
     'Mock TAC tech-support bundle', '='.repeat(30), '',
     'This is a placeholder file from the Platform Dashboard demo build.',
     'In the original, live-backend version of this app, this button streamed',
-    'a real Cisco Intersight tech-support bundle collected from the device.',
+    'a real Vantage tech-support bundle collected from the device.',
     '',
     `Generated: ${new Date().toISOString()}`,
   ].join('\n');
@@ -57,9 +57,9 @@ const TIME_RANGES = [
 ];
 
 const SOURCE_CHOICES = [
-  { key: 'intersight', label: 'Intersight', icon: ScrollText, sources: ['intersight'],            desc: 'Faults, SEL & TAC bundle' },
+  { key: 'vantage', label: 'Vantage', icon: ScrollText, sources: ['vantage'],            desc: 'Faults, SEL & TAC bundle' },
   { key: 'vcenter',    label: 'vCenter',    icon: Activity,   sources: ['vcenter'],               desc: 'Events & host syslog' },
-  { key: 'both',       label: 'Both',       icon: Layers,     sources: ['intersight', 'vcenter'], desc: 'Full picture' },
+  { key: 'both',       label: 'Both',       icon: Layers,     sources: ['vantage', 'vcenter'], desc: 'Full picture' },
 ];
 
 function localToUtcIso(localDateTimeStr) {
@@ -183,7 +183,7 @@ function StatusDot({ status }) {
 const ALARM_SEV_ORDER = { Alert: 0, Offline: 1, Degraded: 2, MM: 3 };
 
 /* "Alarms" section — every non-healthy host, with the exact errors inline:
-   live Intersight alarms, vCenter triggered alarms and config issues. */
+   live Vantage alarms, vCenter triggered alarms and config issues. */
 function AlarmsSection({ hosts, vcByShort, onOpenDevice, deviceLoading }) {
   const [details, setDetails] = useState({}); // moid -> { loading, error, data }
   const fetchedRef = useRef(new Set());
@@ -226,7 +226,7 @@ function AlarmsSection({ hosts, vcByShort, onOpenDevice, deviceLoading }) {
           if (vc.power_state && vc.power_state !== 'poweredOn') reasons.push(`Power: ${vc.power_state}`);
           if (vc.overall_status === 'red' || vc.overall_status === 'yellow') reasons.push(`vCenter overall status: ${vc.overall_status}`);
         }
-        const isAlarms = det.data?.intersight?.alarms || [];
+        const isAlarms = det.data?.vantage?.alarms || [];
         const vcAlarms = det.data?.vcenter?.alarms || [];
         const configIssues = det.data?.vcenter?.config_issues || [];
         return (
@@ -262,7 +262,7 @@ function AlarmsSection({ hosts, vcByShort, onOpenDevice, deviceLoading }) {
               {det.loading && (
                 <p className="flex items-center gap-2 text-xs text-slate-500">
                   <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                  Pulling exact errors from Intersight &amp; vCenter…
+                  Pulling exact errors from Vantage &amp; vCenter…
                 </p>
               )}
               {det.error && (
@@ -274,7 +274,7 @@ function AlarmsSection({ hosts, vcByShort, onOpenDevice, deviceLoading }) {
                     <div key={`is-${i}`} className="flex items-start gap-2 text-sm">
                       <span className="mt-1.5 w-2 h-2 rounded-full bg-red-400 flex-shrink-0" />
                       <p className="text-slate-700 dark:text-slate-200 break-words">
-                        <span className="text-[11px] font-semibold text-slate-500 mr-1.5">INTERSIGHT · {a.severity}</span>
+                        <span className="text-[11px] font-semibold text-slate-500 mr-1.5">VANTAGE · {a.severity}</span>
                         {a.description}
                       </p>
                     </div>
@@ -300,7 +300,7 @@ function AlarmsSection({ hosts, vcByShort, onOpenDevice, deviceLoading }) {
                   ))}
                   {isAlarms.length === 0 && vcAlarms.length === 0 && configIssues.length === 0 && (
                     <p className="text-xs text-slate-500">
-                      No specific alarm text from Intersight or vCenter — the status comes from the state flags above.
+                      No specific alarm text from Vantage or vCenter — the status comes from the state flags above.
                     </p>
                   )}
                 </>
@@ -320,7 +320,7 @@ function SourceChip({ vcenterOnly }) {
     </span>
   ) : (
     <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 whitespace-nowrap">
-      Intersight
+      Vantage
     </span>
   );
 }
@@ -755,7 +755,7 @@ function EquipmentSection({ kind, items, loading, error, onReload, onOpenDevice,
       }
       const result = await res.json();
       setBundle(result);
-      // Resume/reuse a bundle already generated for this device in Intersight.
+      // Resume/reuse a bundle already generated for this device in Vantage.
       const recent = (result.tac_bundles || [])[0];
       if (recent?.status_moid) {
         setTac({
@@ -843,7 +843,7 @@ function EquipmentSection({ kind, items, loading, error, onReload, onOpenDevice,
           <EmptyState
             icon={meta.icon}
             title={query ? `No ${meta.plural.toLowerCase()} match your search` : `No ${meta.plural.toLowerCase()} found`}
-            hint={query ? 'Try clearing the search.' : 'Nothing reported by Intersight.'}
+            hint={query ? 'Try clearing the search.' : 'Nothing reported by Vantage.'}
           />
         </div>
       ) : (
@@ -921,7 +921,7 @@ function EquipmentSection({ kind, items, loading, error, onReload, onOpenDevice,
                     onClick={() => collectFor(d)}
                     disabled={!!collecting}
                     className="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-colors text-xs font-medium disabled:opacity-50 bg-violet-500/10 hover:bg-violet-500/20 text-violet-600 dark:text-violet-400 border-violet-500/30"
-                    title="Pull the Intersight alarm history for this device"
+                    title="Pull the Vantage alarm history for this device"
                   >
                     {collecting === d.moid
                       ? <RefreshCw className="h-3.5 w-3.5 animate-spin" />
@@ -998,7 +998,7 @@ function EquipmentSection({ kind, items, loading, error, onReload, onOpenDevice,
                 <div>
                   <h4 className="text-sm font-bold text-slate-900 dark:text-white">TAC Log Bundle</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Generate the diagnostic bundle Cisco TAC uses — collection runs on the device via Intersight (~5–15 min)
+                    Generate the diagnostic bundle Cisco TAC uses — collection runs on the device via Vantage (~5–15 min)
                   </p>
                 </div>
               </div>
@@ -1015,12 +1015,12 @@ function EquipmentSection({ kind, items, loading, error, onReload, onOpenDevice,
 
             {tac?.existing && (
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Found an existing bundle in Intersight from {fmtLocal(tac.created)} — no need to regenerate it.
+                Found an existing bundle in Vantage from {fmtLocal(tac.created)} — no need to regenerate it.
               </p>
             )}
             {tac?.creating && (
               <p className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Requesting bundle from Intersight…
+                <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Requesting bundle from Vantage…
               </p>
             )}
             {tac?.error && (
@@ -1130,7 +1130,7 @@ function EquipmentAlarmsSection({ kind, items, loading, error, onReload, onOpenD
       <div className="ai-surface rounded-xl p-10 text-center ai-fade-in">
         <CheckCircle2 className="h-8 w-8 mx-auto mb-3 text-emerald-500 dark:text-emerald-400" />
         <p className="text-sm font-medium text-slate-900 dark:text-white">All {meta.plural.toLowerCase()} healthy</p>
-        <p className="text-xs text-slate-500 mt-1">No active Intersight alarms right now.</p>
+        <p className="text-xs text-slate-500 mt-1">No active Vantage alarms right now.</p>
       </div>
     );
   }
@@ -1267,8 +1267,8 @@ function AskClaudeModal({ alarmHosts, hosts, onClose, onPick }) {
 }
 
 const LOG_TABS = [
-  { key: 'sel',    label: 'Intersight SEL',    icon: ScrollText,    source: 'intersight' },
-  { key: 'faults', label: 'Intersight Faults', icon: AlertTriangle, source: 'intersight' },
+  { key: 'sel',    label: 'Vantage SEL',    icon: ScrollText,    source: 'vantage' },
+  { key: 'faults', label: 'Vantage Faults', icon: AlertTriangle, source: 'vantage' },
   { key: 'events', label: 'vCenter Events',    icon: Activity,      source: 'vcenter' },
   { key: 'logs',   label: 'Host Logs',         icon: FileText,      source: 'vcenter' },
 ];
@@ -1356,7 +1356,7 @@ export default function HostDiagnosticsPage() {
 
   // Pending collection awaiting confirmation in the modal: { host } + source picker
   const [pendingCollect, setPendingCollect] = useState(null);
-  const [pendingSources, setPendingSources] = useState(['intersight', 'vcenter']);
+  const [pendingSources, setPendingSources] = useState(['vantage', 'vcenter']);
 
   // TAC tech-support bundle state: { statusMoid, status, fileName, fileSize, reason, error, creating }
   const [tac, setTac] = useState(null);
@@ -1440,7 +1440,7 @@ export default function HostDiagnosticsPage() {
   }, [loadData, loadHistory, loadUsage]);
 
   // FI / Chassis inventory + active alarms — loaded lazily the first time one
-  // of the equipment tabs opens (it costs a live Intersight alarm query).
+  // of the equipment tabs opens (it costs a live Vantage alarm query).
   const [equipment, setEquipment]       = useState(null);
   const [equipLoading, setEquipLoading] = useState(false);
   const [equipError, setEquipError]     = useState(null);
@@ -1542,7 +1542,7 @@ export default function HostDiagnosticsPage() {
     }
   }
 
-  // Match vCenter host records to Intersight blades by short hostname.
+  // Match vCenter host records to Vantage blades by short hostname.
   const vcByShort = useMemo(() => {
     const m = new Map();
     for (const h of vcHosts) m.set((h.host_name || '').split('.')[0].toLowerCase(), h);
@@ -1550,19 +1550,19 @@ export default function HostDiagnosticsPage() {
   }, [vcHosts]);
 
   const hosts = useMemo(() => {
-    const intersight = (data?.hosts || []).map(h => {
+    const vantage = (data?.hosts || []).map(h => {
       const vc = vcByShort.get((h.server_profile || '').toLowerCase());
       return {
         ...h,
         vcenter: vc?.vcenter ? vc.vcenter.split('.')[0] : null,
         cluster: vc?.cluster || null,
-        // Blades in the list are powered on per Intersight; prefer live ESXi state.
+        // Blades in the list are powered on per Vantage; prefer live ESXi state.
         status: vcStatus(vc) || { label: 'Healthy', tone: 'green' },
       };
     });
-    // Hosts that live only in vCenter (no Intersight blade) still support
+    // Hosts that live only in vCenter (no Vantage blade) still support
     // vCenter/syslog collection — list them alongside the blades.
-    const known = new Set(intersight.map(h => (h.server_profile || '').toLowerCase()));
+    const known = new Set(vantage.map(h => (h.server_profile || '').toLowerCase()));
     const vcOnly = vcHosts
       .filter(h => !known.has((h.host_name || '').split('.')[0].toLowerCase()))
       .map(h => ({
@@ -1577,7 +1577,7 @@ export default function HostDiagnosticsPage() {
         cluster: h.cluster || null,
         status: vcStatus(h) || { label: 'Unknown', tone: 'slate' },
       }));
-    return [...intersight, ...vcOnly];
+    return [...vantage, ...vcOnly];
   }, [data, vcHosts, vcByShort]);
 
   const counts = useMemo(() => {
@@ -1828,7 +1828,7 @@ export default function HostDiagnosticsPage() {
     setTac(null);
 
     const body = { host: host.server_profile, sources };
-    if (sources.includes('intersight') && cimcPassword) {
+    if (sources.includes('vantage') && cimcPassword) {
       body.cimc_username = cimcUser || 'admin';
       body.cimc_password = cimcPassword;
     }
@@ -1853,8 +1853,8 @@ export default function HostDiagnosticsPage() {
       setBundle(result);
       const firstTab = LOG_TABS.find(t => result.sources.includes(t.source));
       setActiveLogTab(firstTab ? firstTab.key : 'sel');
-      // Resume/reuse a bundle already generated for this blade in Intersight —
-      // survives page refreshes since Intersight is the source of truth.
+      // Resume/reuse a bundle already generated for this blade in Vantage —
+      // survives page refreshes since Vantage is the source of truth.
       const recent = (result.tac_bundles || [])[0];
       if (recent?.status_moid) {
         setTac({
@@ -1909,7 +1909,7 @@ export default function HostDiagnosticsPage() {
     }
   }
 
-  const hasIntersight = bundle?.sources?.includes('intersight');
+  const hasVantage = bundle?.sources?.includes('vantage');
   const hasVcenter    = bundle?.sources?.includes('vcenter');
   const visibleLogTabs = LOG_TABS.filter(t => bundle?.sources?.includes(t.source));
 
@@ -1919,13 +1919,13 @@ export default function HostDiagnosticsPage() {
   const collectButtons = host => (
     <>
       <button
-        onClick={() => openCollect(host, ['intersight'])}
+        onClick={() => openCollect(host, ['vantage'])}
         disabled={!!collecting || host.vcenter_only}
         className={collectBtnCls('bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/30')}
-        title={host.vcenter_only ? 'Not managed by Intersight' : 'Pull Intersight SEL & faults'}
+        title={host.vcenter_only ? 'Not managed by Vantage' : 'Pull Vantage SEL & faults'}
       >
         <ScrollText className="h-3.5 w-3.5" />
-        Intersight
+        Vantage
       </button>
       <button
         onClick={() => openCollect(host, ['vcenter'])}
@@ -1937,10 +1937,10 @@ export default function HostDiagnosticsPage() {
         vCenter
       </button>
       <button
-        onClick={() => openCollect(host, ['intersight', 'vcenter'])}
+        onClick={() => openCollect(host, ['vantage', 'vcenter'])}
         disabled={!!collecting || host.vcenter_only}
         className={collectBtnCls('bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30')}
-        title={host.vcenter_only ? 'Not managed by Intersight' : 'Pull both Intersight & vCenter logs'}
+        title={host.vcenter_only ? 'Not managed by Vantage' : 'Pull both Vantage & vCenter logs'}
       >
         <Layers className="h-3.5 w-3.5" />
         Both
@@ -2747,7 +2747,7 @@ export default function HostDiagnosticsPage() {
             )}
 
             {/* TAC tech-support bundle */}
-            {hasIntersight && (
+            {hasVantage && (
               <div className="ai-surface rounded-2xl p-6 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -2757,7 +2757,7 @@ export default function HostDiagnosticsPage() {
                     <div>
                       <h2 className="text-sm font-bold text-slate-900 dark:text-white">TAC Log Bundle</h2>
                       <p className="text-xs text-slate-500 dark:text-slate-400">
-                        Generate the diagnostic bundle Cisco TAC uses — collection runs on the blade via Intersight (~5–15 min)
+                        Generate the diagnostic bundle Cisco TAC uses — collection runs on the blade via Vantage (~5–15 min)
                       </p>
                     </div>
                   </div>
@@ -2774,13 +2774,13 @@ export default function HostDiagnosticsPage() {
 
                 {tac?.existing && (
                   <p className="text-xs text-slate-400">
-                    Found an existing bundle in Intersight from {fmtLocal(tac.created)} — no need to regenerate it.
+                    Found an existing bundle in Vantage from {fmtLocal(tac.created)} — no need to regenerate it.
                   </p>
                 )}
 
                 {tac?.creating && (
                   <p className="flex items-center gap-2 text-xs text-slate-400">
-                    <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Requesting bundle from Intersight…
+                    <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Requesting bundle from Vantage…
                   </p>
                 )}
                 {tac?.error && (
@@ -2824,10 +2824,10 @@ export default function HostDiagnosticsPage() {
 
             {/* Summary cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {hasIntersight && (
+              {hasVantage && (
                 <SummaryCard icon={ScrollText} label="SEL Entries" value={bundle.sel_entries.length} color="text-cyan-400" />
               )}
-              {hasIntersight && (
+              {hasVantage && (
                 <SummaryCard icon={AlertTriangle} label="Faults in Window" value={bundle.faults.length} color="text-orange-400" />
               )}
               {hasVcenter && (
@@ -2835,7 +2835,7 @@ export default function HostDiagnosticsPage() {
               )}
               <SummaryCard
                 icon={bundle.host_online === null ? HelpCircle : bundle.host_online ? CheckCircle2 : XCircle}
-                label={hasIntersight ? 'Blade Power' : 'Host Status'}
+                label={hasVantage ? 'Blade Power' : 'Host Status'}
                 value={bundle.host_online === null ? 'Unknown' : bundle.host_online ? 'Online' : 'Offline'}
                 color={bundle.host_online === null ? 'text-slate-400' : bundle.host_online ? 'text-green-400' : 'text-red-400'}
               />
@@ -2929,14 +2929,14 @@ export default function HostDiagnosticsPage() {
 
             {/* Tab content */}
             <div className="ai-surface rounded-2xl overflow-hidden">
-              {activeLogTab === 'sel' && hasIntersight && bundle.sel_error && (
+              {activeLogTab === 'sel' && hasVantage && bundle.sel_error && (
                 <div className="px-4 pt-4">
                   <div className="rounded-xl p-3 border border-amber-500/30 bg-amber-500/10">
                     <p className="text-xs text-amber-300 font-medium">{bundle.sel_error}</p>
                   </div>
                 </div>
               )}
-              {activeLogTab === 'sel' && hasIntersight && bundle.sel_source === 'bundle' && (
+              {activeLogTab === 'sel' && hasVantage && bundle.sel_source === 'bundle' && (
                 <div className="px-4 pt-4">
                   <div className="rounded-xl p-3 border border-cyan-500/30 bg-cyan-500/10">
                     <p className="text-xs text-cyan-300 font-medium">
@@ -2946,7 +2946,7 @@ export default function HostDiagnosticsPage() {
                   </div>
                 </div>
               )}
-              {activeLogTab === 'sel' && hasIntersight && (
+              {activeLogTab === 'sel' && hasVantage && (
                 <LogTable
                   columns={['Timestamp', 'Severity', 'Description']}
                   rows={bundle.sel_entries}
@@ -2959,7 +2959,7 @@ export default function HostDiagnosticsPage() {
                   )}
                 />
               )}
-              {activeLogTab === 'faults' && hasIntersight && (
+              {activeLogTab === 'faults' && hasVantage && (
                 <LogTable
                   columns={['Created', 'Severity', 'Code', 'Component', 'Description']}
                   rows={bundle.faults}
@@ -3116,13 +3116,13 @@ export default function HostDiagnosticsPage() {
             <div>
               <h3 className="text-base font-bold text-slate-900 dark:text-white">
                 Collecting {collecting.sources.length === 2
-                  ? 'Intersight & vCenter'
-                  : collecting.sources[0] === 'intersight' ? 'Intersight' : 'vCenter'} logs
+                  ? 'Vantage & vCenter'
+                  : collecting.sources[0] === 'vantage' ? 'Vantage' : 'vCenter'} logs
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-mono">{collecting.host}</p>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              {collecting.sources.includes('intersight') && 'Querying Intersight faults, SEL and TAC bundles. '}
+              {collecting.sources.includes('vantage') && 'Querying Vantage faults, SEL and TAC bundles. '}
               {collecting.sources.includes('vcenter') && 'Querying vCenter events and AriaOps syslog. '}
               This usually takes 15–60 seconds.
             </p>
@@ -3149,7 +3149,7 @@ export default function HostDiagnosticsPage() {
               )}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Correlating {bundle?.sources?.includes('intersight') ? 'faults, SEL, ' : ''}events and host logs
+              Correlating {bundle?.sources?.includes('vantage') ? 'faults, SEL, ' : ''}events and host logs
               {tac?.status === 'Completed' ? ' plus the TAC bundle' : ''} into a root-cause summary.
               This usually takes 30–60 seconds.
             </p>
@@ -3166,7 +3166,7 @@ export default function HostDiagnosticsPage() {
           onPick={(h) => {
             setAskClaudeOpen(false);
             navigate('/host-diagnostics?section=servers');
-            openCollect(h, ['intersight', 'vcenter']);
+            openCollect(h, ['vantage', 'vcenter']);
           }}
         />
       )}
@@ -3204,7 +3204,7 @@ export default function HostDiagnosticsPage() {
               <div className="flex justify-between">
                 <span className="text-slate-500">Blade</span>
                 <span className="font-medium text-slate-700 dark:text-slate-200">
-                  {pendingCollect.host.vcenter_only ? 'vCenter only — no Intersight blade' : pendingCollect.host.blade_name}
+                  {pendingCollect.host.vcenter_only ? 'vCenter only — no Vantage blade' : pendingCollect.host.blade_name}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -3230,13 +3230,13 @@ export default function HostDiagnosticsPage() {
                 {SOURCE_CHOICES.map(c => {
                   const Icon = c.icon;
                   const selected = pendingSources.join() === c.sources.join();
-                  const disabled = pendingCollect.host.vcenter_only && c.sources.includes('intersight');
+                  const disabled = pendingCollect.host.vcenter_only && c.sources.includes('vantage');
                   return (
                     <button
                       key={c.key}
                       onClick={() => !disabled && setPendingSources(c.sources)}
                       disabled={disabled}
-                      title={disabled ? 'Not managed by Intersight' : c.desc}
+                      title={disabled ? 'Not managed by Vantage' : c.desc}
                       className={`flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl border text-xs font-medium transition-colors
                         ${selected
                           ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-500 dark:text-cyan-300'
@@ -3296,7 +3296,7 @@ export default function HostDiagnosticsPage() {
               )}
             </div>
 
-            {pendingSources.includes('intersight') ? (
+            {pendingSources.includes('vantage') ? (
               <div className="space-y-3 mb-5">
                 <p className="text-xs text-slate-500">
                   CIMC credentials — used to pull the SEL from the blade for this request only,

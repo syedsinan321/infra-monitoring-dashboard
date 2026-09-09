@@ -48,9 +48,9 @@ function App() {
   }, [loadData]);
 
   // Hourly background poll that pauses while the tab is hidden — an idle tab
-  // used to drive ~54k Intersight calls/day at the old 30s cadence. On focus
+  // used to drive ~54k Vantage calls/day at the old 30s cadence. On focus
   // we refetch immediately (usually served by the backend cache) and restart
-  // the hour. The Refresh button forces a live Intersight fetch.
+  // the hour. The Refresh button forces a live Vantage fetch.
   useEffect(() => {
     const POLL_MS = 3600000;
     let interval = null;
@@ -107,7 +107,7 @@ function App() {
               }
             />
             <Route
-              path="/architecture/intersight"
+              path="/architecture/vantage"
               element={<ErrorBoundary><ArchitecturePage /></ErrorBoundary>}
             />
             <Route

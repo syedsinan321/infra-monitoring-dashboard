@@ -79,7 +79,7 @@ const TEMPLATE_ROWS = 100;
  */
 export async function buildInventoryTemplate() {
   const wb = new ExcelJS.Workbook();
-  wb.creator = 'Intersight Dashboard';
+  wb.creator = 'Vantage Dashboard';
   wb.created = new Date();
 
   const ws = wb.addWorksheet('Inventory', {

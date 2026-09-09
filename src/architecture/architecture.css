@@ -1,4 +1,4 @@
-/* Cisco Intersight Architecture page — ported from the standalone Desktop
+/* Vantage Architecture page — ported from the standalone Desktop
    HTML. Follows the app theme: light values on .arch-root, dark overrides
    under `.dark` (the class ThemeContext puts on <html>). Both palettes were
    run through the dataviz validator against their surface. All rules are

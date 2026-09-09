@@ -3,10 +3,10 @@ import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import ArchitecturePage from '../pages/ArchitecturePage';
 
-/* Near-fullscreen overlay for the Intersight Architecture diagram, opened
-   from the Dashboard's "Intersight Topology" banner instead of navigating
+/* Near-fullscreen overlay for the Vantage Architecture diagram, opened
+   from the Dashboard's "Vantage Topology" banner instead of navigating
    away. Reuses ArchitecturePage as-is (it manages its own data fetching). */
-export default function IntersightTopologyModal({ onClose }) {
+export default function VantageTopologyModal({ onClose }) {
   useEffect(() => {
     const onKey = e => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);

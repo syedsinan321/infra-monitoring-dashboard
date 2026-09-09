@@ -81,7 +81,7 @@ function SerialLookup() {
           <h2 className="text-lg font-semibold">Bulk Serial Number Lookup</h2>
         </div>
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-          Enter serial numbers to check if they exist in Intersight
+          Enter serial numbers to check if they exist in Vantage
         </p>
       </div>
 

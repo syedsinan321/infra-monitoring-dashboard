@@ -58,7 +58,7 @@ function FabricInterconnectSection({ fabricInterconnects }) {
       <div className="divide-y divide-white/10 dark:divide-white/5">
         {domainGroups.length === 0 ? (
           <div className="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
-            No Fabric Interconnects found in your Intersight environment
+            No Fabric Interconnects found in your Vantage environment
           </div>
         ) : (
           domainGroups.map((domain) => {

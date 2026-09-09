@@ -1,6 +1,6 @@
 // Static mock data layer for the Platform Dashboard demo build.
 // Everything here is fabricated but shaped to match what the real
-// Cisco Intersight / vCenter / AriaOps-backed API used to return, so the
+// Vantage / vCenter / AriaOps-backed API used to return, so the
 // UI components render exactly as they did against the live backend.
 //
 // State that used to live server-side (spare inventory, alert rules/history,
@@ -112,7 +112,7 @@ DOMAINS.forEach((domain) => {
         num_cpu_cores: gen === 'M5' ? 24 : 32,
         total_memory: gen === 'M5' ? 524288 : 1048576,
         assigned_server_profile: profileName,
-        management_mode: 'Intersight',
+        management_mode: 'Vantage',
         mgmt_ip: `10.${DOMAINS.indexOf(domain) + 20}.${c}.${10 + slot}`,
       });
 
@@ -621,13 +621,13 @@ const AUDIT_ACTIONS = [
   ['tpm_keys_auth', null, 'TPM Keys page unlocked'],
   ['tpm_keys_collect', null, 'Started TPM key collection run'],
   ['host_inventory_sync', null, 'Manual host inventory sync'],
-  ['diagnostics_collect', 'esx-site1-11', 'Collected diagnostics bundle (Intersight + vCenter)'],
+  ['diagnostics_collect', 'esx-site1-11', 'Collected diagnostics bundle (Vantage + vCenter)'],
   ['diagnostics_analyze', 'esx-site1-11', 'Ran AI root-cause analysis'],
   ['diagnostics_techsupport', 'esx-site2-06', 'Requested TAC tech-support bundle'],
   ['spare_inventory_add', 'UCSX-210C-M7', 'Added spare hardware line item'],
   ['spare_inventory_edit', 'UCSX-MR-X64G2RW', 'Edited spare hardware quantity'],
   ['spare_inventory_delete', 'Rack rail kit', 'Removed spare hardware line item'],
-  ['integration_toggle', 'intersight_domain:SITE2', 'Toggled integration visibility'],
+  ['integration_toggle', 'vantage_domain:SITE2', 'Toggled integration visibility'],
   ['diagnostics_history_delete', null, 'Deleted a diagnostics history record'],
   ['webhook_history_delete', null, 'Deleted an AriaOps webhook firing record'],
 ];
@@ -668,7 +668,7 @@ export function decommissionedPayload() {
       serial: 'FCH1998V2AA', model: 'UCSB-B200-M4', name: 'Blade-6', domain: 'site2prducs01',
       chassis_id: 1, slot_id: 6, chassis_name: 'site2prducs01-1', presence: 'Equipped',
       flag: 'recommissioned', severity: 'warning',
-      detail: 'Marked decommissioned previously, but the serial is active again in Intersight.',
+      detail: 'Marked decommissioned previously, but the serial is active again in Vantage.',
       replacement: null,
     },
     {
@@ -682,7 +682,7 @@ export function decommissionedPayload() {
       serial: 'FCH1756V0EF', model: 'UCSB-B200-M4', name: 'Blade-2', domain: 'site2prducs01',
       chassis_id: 2, slot_id: 2, chassis_name: 'site2prducs01-2', presence: null,
       flag: 'removed', severity: 'ok',
-      detail: 'Fully removed from Intersight and the slot remains empty.',
+      detail: 'Fully removed from Vantage and the slot remains empty.',
       replacement: null,
     },
   ];
@@ -822,7 +822,7 @@ export function backupStatusPayload() {
 // ---------------------------------------------------------------------------
 
 export const integrationToggles = {
-  intersight: true, 'intersight_domain:SITE1': true, 'intersight_domain:SITE2': true,
+  vantage: true, 'vantage_domain:SITE1': true, 'vantage_domain:SITE2': true,
   arialog: true, smtp: true, teams: true, ariaops_webhook: true, arialog_alerting: false,
 };
 ESXI_HOST_RECORDS.slice(0, 1); // (keeps ordering deterministic — no-op)
@@ -830,9 +830,9 @@ Object.keys(VCENTER_BY_DC).forEach((dc) => { integrationToggles[`vcenter:${VCENT
 
 export function integrationsHealthPayload() {
   const defs = [
-    { key: 'intersight', name: 'Cisco Intersight', category: 'Infrastructure', detail: 'Connected — API reachable, fleet data current.', latency_ms: 210 },
-    { key: 'intersight_domain:SITE1', name: 'Intersight — SITE1 domain', category: 'Infrastructure', detail: 'SITE1 UCS domain visible and polling normally.', latency_ms: 180 },
-    { key: 'intersight_domain:SITE2', name: 'Intersight — SITE2 domain', category: 'Infrastructure', detail: 'SITE2 UCS domain visible and polling normally.', latency_ms: 195 },
+    { key: 'vantage', name: 'Vantage', category: 'Infrastructure', detail: 'Connected — API reachable, fleet data current.', latency_ms: 210 },
+    { key: 'vantage_domain:SITE1', name: 'Vantage — SITE1 domain', category: 'Infrastructure', detail: 'SITE1 UCS domain visible and polling normally.', latency_ms: 180 },
+    { key: 'vantage_domain:SITE2', name: 'Vantage — SITE2 domain', category: 'Infrastructure', detail: 'SITE2 UCS domain visible and polling normally.', latency_ms: 195 },
     { key: `vcenter:${VCENTER_BY_DC.SITE1}`, name: `vCenter — ${VCENTER_BY_DC.SITE1}`, category: 'Infrastructure', detail: 'Session valid, host/VM inventory syncing.', latency_ms: 260 },
     { key: `vcenter:${VCENTER_BY_DC.SITE2}`, name: `vCenter — ${VCENTER_BY_DC.SITE2}`, category: 'Infrastructure', detail: 'Session valid, host/VM inventory syncing.', latency_ms: 275 },
     { key: 'arialog', name: 'AriaOps for Logs', category: 'Logging', detail: 'Query API reachable, credentials valid.', latency_ms: 340 },
@@ -982,7 +982,7 @@ export function diagnosticsEquipmentPayload() {
       ...mockAlarms(false),
     })),
     appliance: {
-      moid: hexId(), serial: 'WZP26150ABC', hostname: 'intersight-assist-01.example.com',
+      moid: hexId(), serial: 'WZP26150ABC', hostname: 'vantage-assist-01.example.com',
       connection_status: 'Connected', connection_status_changed: isoDaysAgo(45), connector_version: '1.0.9-2026',
       alarms: [], alarm_counts: { Critical: 0, Major: 0, Warning: 0, Info: 0 },
     },
@@ -1073,14 +1073,14 @@ export function hostAlertsPayload(hostShort) {
   const troubled = blade && blade.oper_state !== 'ok';
   return {
     host: hostShort,
-    intersight: blade ? {
+    vantage: blade ? {
       blade: blade.name,
       alarms: troubled ? [{
         severity: 'Warning', code: 'F0181', description: 'Elevated temperature on CPU 2 — thermal margin below threshold.',
         created: isoDaysAgo(0.4), affected_mo: `sys/chassis-${blade.chassis_id}/blade-${blade.slot_id}`, acknowledged: false,
       }] : [],
     } : null,
-    intersight_error: null,
+    vantage_error: null,
     vcenter: vc ? {
       found: true,
       in_maintenance: !!vc.maintenance_mode,
@@ -1104,14 +1104,14 @@ function mockFaults(troubled) {
   }];
 }
 
-export function collectDiagnosticsPayload({ host, hours = 24, sources = ['intersight', 'vcenter'] }) {
+export function collectDiagnosticsPayload({ host, hours = 24, sources = ['vantage', 'vcenter'] }) {
   const { blade, vc } = findHostAlertContext(host);
   const troubled = blade && blade.oper_state !== 'ok';
   const windowEnd = new Date();
   const windowStart = new Date(windowEnd.getTime() - (hours || 24) * 3600 * 1000);
   const bundle = {
     mock: false,
-    notice: 'Sample fleet — collected from the demo Intersight/vCenter fixtures, not a live device.',
+    notice: 'Sample fleet — collected from the demo Vantage/vCenter fixtures, not a live device.',
     sel_live: false,
     sel_source: 'bundle',
     sel_error: null,
@@ -1125,8 +1125,8 @@ export function collectDiagnosticsPayload({ host, hours = 24, sources = ['inters
       server_profile: blade.assigned_server_profile, mgmt_ip: blade.mgmt_ip,
       oper_state: blade.oper_state, oper_power_state: blade.oper_power_state,
     } : null,
-    faults: sources.includes('intersight') ? mockFaults(troubled) : [],
-    sel_entries: sources.includes('intersight') ? (troubled ? [
+    faults: sources.includes('vantage') ? mockFaults(troubled) : [],
+    sel_entries: sources.includes('vantage') ? (troubled ? [
       { timestamp: isoDaysAgo(0.4), severity: 'Warning', description: 'CPU2 THERMAL MARGIN sensor: reading above upper non-critical threshold' },
       { timestamp: isoDaysAgo(0.39), severity: 'Critical', description: 'Host power off requested by policy (thermal protection)' },
     ] : [
@@ -1173,8 +1173,8 @@ function buildAnalysis(host, bundle) {
       mock: false, host, tac_bundle_used: false, severity: 'Info', confidence: 'High', confidence_pct: 92,
       root_cause: 'No fault indicators found in the collected window — host is operating normally.',
       root_cause_label: 'No anomaly detected',
-      summary: `Reviewed Intersight faults, SEL entries, and vCenter events for ${host} across the requested window. No hardware faults, thermal events, or HA-triggering conditions were present. All sensors report within nominal range and the host remained online throughout.`,
-      key_findings: ['No Intersight faults in window', 'No Critical/Major SEL entries', 'vCenter reports host healthy and connected', 'No HA or vMotion events tied to this host'],
+      summary: `Reviewed Vantage faults, SEL entries, and vCenter events for ${host} across the requested window. No hardware faults, thermal events, or HA-triggering conditions were present. All sensors report within nominal range and the host remained online throughout.`,
+      key_findings: ['No Vantage faults in window', 'No Critical/Major SEL entries', 'vCenter reports host healthy and connected', 'No HA or vMotion events tied to this host'],
       impact: 'None — no service impact detected.',
       vm_downtime: '0',
       recovery: 'No action required.',
@@ -1182,10 +1182,10 @@ function buildAnalysis(host, bundle) {
       incident_duration: 'n/a',
       references: [],
       evidence: [
-        { timestamp: bundle.window_end, source: 'Intersight', title: 'No active faults', detail: 'Fault query returned zero entries for the selected window.', category: 'other', status: 'ok' },
+        { timestamp: bundle.window_end, source: 'Vantage', title: 'No active faults', detail: 'Fault query returned zero entries for the selected window.', category: 'other', status: 'ok' },
         { timestamp: bundle.window_end, source: 'vcenter', title: 'Host overall status green', detail: 'vCenter reports the host connected with no triggered alarms.', category: 'vcenter', status: 'ok' },
       ],
-      reasoning: ['Checked Intersight fault/SEL feed for the window — empty.', 'Cross-checked vCenter events — no hardware or HA events.', 'Concluded the host is healthy for this window.'],
+      reasoning: ['Checked Vantage fault/SEL feed for the window — empty.', 'Cross-checked vCenter events — no hardware or HA events.', 'Concluded the host is healthy for this window.'],
       recommendations: [{ action: 'No action needed', note: 'Continue routine monitoring.', priority: 'P3', duration: 'n/a', risk: 'None' }],
       usage, usage_totals: usageTotals,
     };
@@ -1209,14 +1209,14 @@ function buildAnalysis(host, bundle) {
     incident_duration: '~35 minutes (thermal excursion to full recovery)',
     references: ['Cisco UCS Thermal Protection Policy documentation', 'CSCwm12345 — DIMM/thermal correctable-error advisory (informational, not confirmed cause)'],
     evidence: [
-      { timestamp: isoDaysAgo(0.4), source: 'Intersight SEL', title: 'Thermal margin warning', detail: 'CPU2 THERMAL MARGIN sensor above upper non-critical threshold.', category: 'sensors', status: 'warning' },
-      { timestamp: isoDaysAgo(0.39), source: 'Intersight SEL', title: 'Emergency power-off', detail: 'Host power off requested by policy (thermal protection).', category: 'cimc', status: 'critical' },
+      { timestamp: isoDaysAgo(0.4), source: 'Vantage SEL', title: 'Thermal margin warning', detail: 'CPU2 THERMAL MARGIN sensor above upper non-critical threshold.', category: 'sensors', status: 'warning' },
+      { timestamp: isoDaysAgo(0.39), source: 'Vantage SEL', title: 'Emergency power-off', detail: 'Host power off requested by policy (thermal protection).', category: 'cimc', status: 'critical' },
       { timestamp: isoDaysAgo(0.39), source: 'vcenter', title: 'Hardware sensor group status red', detail: 'com.vmware.vc.HardwareSensorGroupStatus event fired for the host.', category: 'vcenter', status: 'critical' },
       { timestamp: isoDaysAgo(0.38), source: 'vcenter', title: 'HA restart triggered', detail: 'vSphere HA detected a host failure and restarted affected VMs.', category: 'vcenter', status: 'warning' },
       { timestamp: isoDaysAgo(0.4), source: 'vmkernel.log', title: 'Thermal throttling engaged', detail: 'vmkernel logged thermal throttling on CPU package 1 shortly before shutdown.', category: 'vmkernel', status: 'warning' },
     ],
     reasoning: [
-      'Intersight SEL shows a thermal warning followed within a minute by a critical thermal-triggered power-off.',
+      'Vantage SEL shows a thermal warning followed within a minute by a critical thermal-triggered power-off.',
       'vCenter events corroborate the timeline: hardware sensor alarm, then host disconnect, then HA restart.',
       'No PSU or fan-specific fault codes were present, which argues against a straightforward component failure.',
       'Given the timing and lack of a component fault code, environmental/airflow causes are the leading explanation.',
@@ -1248,7 +1248,7 @@ export function collectEquipmentPayload({ kind, moid, hours = 24 }) {
   const windowEnd = new Date();
   const windowStart = new Date(windowEnd.getTime() - (hours || 24) * 3600 * 1000);
   const bundle = {
-    host: name, kind, moid, sources: ['intersight'],
+    host: name, kind, moid, sources: ['vantage'],
     window_start: windowStart.toISOString(), window_end: windowEnd.toISOString(),
     tac_bundles: [],
     device: device ? {
@@ -1260,7 +1260,7 @@ export function collectEquipmentPayload({ kind, moid, hours = 24 }) {
     faults: troubled ? [{ created: isoDaysAgo(0.1), severity: 'Warning', code: 'F0522', description: 'Fabric interconnect evacuation in progress — traffic draining to peer.', affected_mo: `sys/switch-${device.switch_id}` }] : [],
     sel_entries: [], vcenter_events: [], host_logs: [],
   };
-  const record = saveDiagnosticsHistory({ host: name, kind, sources: ['intersight'], bundle });
+  const record = saveDiagnosticsHistory({ host: name, kind, sources: ['vantage'], bundle });
   bundle.history_id = record.id;
   return bundle;
 }
@@ -1347,11 +1347,11 @@ export function deleteDiagnosticsHistoryRecord(id) {
   const healthyHost = ESXI_HOST_RECORDS[0]?.host_name.split('.')[0];
   const troubledBlade = bladesList.find((b) => b.oper_state !== 'ok');
   if (healthyHost) {
-    const bundle = collectDiagnosticsPayload({ host: healthyHost, hours: 24, sources: ['intersight', 'vcenter'] });
+    const bundle = collectDiagnosticsPayload({ host: healthyHost, hours: 24, sources: ['vantage', 'vcenter'] });
     analyzeDiagnosticsPayload({ host: healthyHost, bundle });
   }
   if (troubledBlade) {
-    const bundle = collectDiagnosticsPayload({ host: troubledBlade.assigned_server_profile, hours: 24, sources: ['intersight', 'vcenter'] });
+    const bundle = collectDiagnosticsPayload({ host: troubledBlade.assigned_server_profile, hours: 24, sources: ['vantage', 'vcenter'] });
     analyzeDiagnosticsPayload({ host: troubledBlade.assigned_server_profile, bundle });
   }
 })();

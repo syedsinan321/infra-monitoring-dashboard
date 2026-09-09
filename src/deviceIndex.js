@@ -4,7 +4,7 @@ import {
 
 /**
  * Build the merged device index used by the global search bar and the
- * device detail card: Intersight blades enriched with CIMC + vCenter info,
+ * device detail card: Vantage blades enriched with CIMC + vCenter info,
  * vCenter-only hosts, and fabric interconnects. Built entirely from the
  * static mock fleet — no network round trip needed for a static demo.
  */
@@ -71,7 +71,7 @@ export async function loadDeviceIndex() {
       usedPorts: f.used_ports,
     });
   }
-  // Decommissioned blades live only in Intersight's identity MOs — compute/Blades
+  // Decommissioned blades live only in Vantage's identity MOs — compute/Blades
   // drops them — so searching a serial off a pulled blade would otherwise come up
   // empty. Added last so a live device with the same serial always ranks first.
   for (const d of decommissionedPayload().items || []) {

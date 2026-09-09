@@ -11,7 +11,7 @@ import { classifyDC } from '../dcColors';
 import { fetchEsxiHostList } from '../api';
 import { loadDeviceIndex } from '../deviceIndex';
 import DeviceDetailModal from '../components/DeviceDetailModal';
-import IntersightTopologyModal from '../components/IntersightTopologyModal';
+import VantageTopologyModal from '../components/VantageTopologyModal';
 import DashboardSearch from '../components/DashboardSearch';
 import HardwareLookup from '../components/HardwareLookup';
 import DomainWidgets from '../components/DomainWidgets';
@@ -199,11 +199,11 @@ function DashboardPage({ data }) {
   const [lookupOpen, setLookupOpen] = useState(false);
   const [topologyOpen, setTopologyOpen] = useState(false);
   // View-only filter — narrows what's rendered without touching Settings'
-  // per-datacenter Intersight toggle (that one hides data app-wide; this is
+  // per-datacenter Vantage toggle (that one hides data app-wide; this is
   // just for looking at one DC at a time).
   const [dcFilter, setDcFilter] = useState('all');
   // All vCenter hosts (incl. rack mounts) — feeds the donuts' health rollup
-  // and the "vCenter hosts" strip. Fail-soft: null keeps Intersight-only view.
+  // and the "vCenter hosts" strip. Fail-soft: null keeps Vantage-only view.
   const [vcHosts, setVcHosts] = useState(null);
   const [vcState, setVcState] = useState('loading');      // 'loading' | 'ready' | 'error'
   const [healthModal, setHealthModal] = useState(null);   // { title, items }
@@ -323,13 +323,13 @@ function DashboardPage({ data }) {
       else d.spares += 1;
       if (b.assigned_server_profile) d.assigned += 1;
 
-      // Donut bucket: Intersight hardware state + the host's vCenter rollup
+      // Donut bucket: Vantage hardware state + the host's vCenter rollup
       // (profile name ≙ ESXi host short name). Reasons feed the popup.
       const vc = vcHealth?.[(b.assigned_server_profile || '').toLowerCase()];
       if (vcHealth && b.assigned_server_profile && !vc) d.outsideVc += 1;
       const vcDisconnected = vc?.conn && vc.conn !== 'connected';
       const reasons = [];
-      if (degraded) reasons.push(`Intersight hardware state: ${b.oper_state}`);
+      if (degraded) reasons.push(`Vantage hardware state: ${b.oper_state}`);
       if (vcDisconnected) reasons.push(`vCenter connection: ${vc.conn}`);
       if (vc?.overall === 'red') reasons.push('vCenter overall status red — active alarms');
       if (degraded || vcDisconnected || vc?.overall === 'red') {
@@ -439,7 +439,7 @@ function DashboardPage({ data }) {
           </div>
           <div className="min-w-0 text-left">
             <p className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-              Intersight Topology <span>✨</span>
+              Vantage Topology <span>✨</span>
             </p>
             <p className="text-xs text-slate-600 dark:text-slate-300 truncate">
               See the live UCS fabric — cloud down to every chassis port
@@ -448,7 +448,7 @@ function DashboardPage({ data }) {
         </div>
         <ChevronRight className="h-5 w-5 text-cyan-600 dark:text-cyan-300 flex-shrink-0 transition-transform group-hover:translate-x-1" />
       </button>
-      {topologyOpen && <IntersightTopologyModal onClose={() => setTopologyOpen(false)} />}
+      {topologyOpen && <VantageTopologyModal onClose={() => setTopologyOpen(false)} />}
 
       <div className="flex items-stretch gap-3">
         <div className="flex-1 min-w-0"><DashboardSearch /></div>
@@ -496,9 +496,9 @@ function DashboardPage({ data }) {
       <Card className="p-5">
         <CardHeader title="Infrastructure health" sub="Blade power, hardware state & vCenter health, by datacenter" />
 
-        {/* Source: Intersight — physical UCS blades (spares included) */}
+        {/* Source: Vantage — physical UCS blades (spares included) */}
         <div className="mt-4 flex items-center gap-2">
-          <Badge variant="info">Intersight</Badge>
+          <Badge variant="info">Vantage</Badge>
           <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">UCS blades</span>
           <span className="text-xs text-slate-500">— physical hardware, spares included</span>
         </div>
@@ -581,7 +581,7 @@ function DashboardPage({ data }) {
             </div>
             {vcState === 'error' ? (
               <p className="text-xs text-amber-600 dark:text-amber-400">
-                vCenter health unavailable right now — the donuts above show the Intersight-only view.
+                vCenter health unavailable right now — the donuts above show the Vantage-only view.
               </p>
             ) : (
               <p className="flex items-center gap-2 text-xs text-slate-500">
@@ -642,7 +642,7 @@ function DashboardPage({ data }) {
 
             {/* Why the two totals differ */}
             <p className="mt-4 pt-3 border-t border-slate-200/60 dark:border-white/[0.06] text-xs text-slate-500 leading-relaxed">
-              Note: these are different populations, so the totals won't match. Intersight counts physical
+              Note: these are different populations, so the totals won't match. Vantage counts physical
               UCS blades — including spares and blades running outside these vCenters
               {dcs.some(dc => byDC[dc].outsideVc > 0) && (
                 <>

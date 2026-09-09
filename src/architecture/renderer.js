@@ -1,4 +1,4 @@
-/* Cisco Intersight architecture diagram renderer.
+/* Vantage architecture diagram renderer.
  *
  * Ported from the standalone Desktop HTML: vanilla DOM + SVG, no React state.
  * mountArchitecture(root, data) builds the whole diagram inside `root` and
@@ -17,24 +17,24 @@ const ICONS = {
 };
 
 const NODE_INFO = {
-  intersight: {
-    title: 'Cisco Intersight', sub: 'SaaS Cloud Platform', icon: 'cloud',
+  vantage: {
+    title: 'Vantage', sub: 'SaaS Cloud Platform', icon: 'cloud',
     desc: "Cisco's cloud-hosted infrastructure management platform. Every UCS domain below is claimed here, giving one control plane for inventory, health, firmware, server profiles and automation — instead of logging into each domain separately.",
     usedFor: 'Single pane of glass: lifecycle management, monitoring, alarms, firmware upgrades and API access (this dashboard app talks to its REST API).',
   },
   appliance: {
-    title: 'Intersight Virtual Appliance', sub: 'Private / Connected Mode', icon: 'appliance',
-    desc: "An on-premises VM that runs the Intersight platform inside the datacenter. The Fabric Interconnects' device connectors register to it locally; it then syncs securely to Cisco's cloud (Connected Mode) so data never requires direct device-to-internet access.",
+    title: 'Vantage Virtual Appliance', sub: 'Private / Connected Mode', icon: 'appliance',
+    desc: "An on-premises VM that runs the Vantage platform inside the datacenter. The Fabric Interconnects' device connectors register to it locally; it then syncs securely to Cisco's cloud (Connected Mode) so data never requires direct device-to-internet access.",
     usedFor: 'Keeps management traffic on-prem, satisfies security requirements, and is the claim point for all UCS domains.',
   },
   assist: {
-    title: 'Intersight Assist', sub: 'Integration Gateway', icon: 'assist',
-    desc: 'A helper appliance that lets Intersight manage targets that have no built-in device connector — for example VMware vCenter or storage arrays. Assist polls those targets locally and relays the data to Intersight.',
-    usedFor: 'Extends Intersight visibility beyond UCS hardware (hypervisors, storage, network devices).',
+    title: 'Vantage Assist', sub: 'Integration Gateway', icon: 'assist',
+    desc: 'A helper appliance that lets Vantage manage targets that have no built-in device connector — for example VMware vCenter or storage arrays. Assist polls those targets locally and relays the data to Vantage.',
+    usedFor: 'Extends Vantage visibility beyond UCS hardware (hypervisors, storage, network devices).',
   },
   fi: {
     desc: 'The Fabric Interconnect is the heart of a UCS domain: all server data traffic, chassis uplinks and hardware management flow through it. FIs are always deployed as an A/B pair — every chassis connects to both, so either fabric can carry the load alone.',
-    usedFor: 'Converged LAN/SAN switching for every blade, plus the management plane (its device connector is what registers the whole domain into Intersight).',
+    usedFor: 'Converged LAN/SAN switching for every blade, plus the management plane (its device connector is what registers the whole domain into Vantage).',
   },
   chassis: {
     desc: "A modular chassis housing the domain's compute nodes (blades). Its I/O modules (IFMs/IOMs) at the rear are its only connection to the world — each one cables to a different Fabric Interconnect, so the chassis always has redundant paths.",
@@ -59,11 +59,11 @@ const MARKUP = `
       <div class="zone" id="zoneCloud">
         <div class="zone-label">Cloud / Management</div>
         <div class="zone-row">
-          <div class="node" data-node="intersight" tabindex="0" id="n-intersight">
+          <div class="node" data-node="vantage" tabindex="0" id="n-vantage">
             <div class="node-head">
               <span class="node-icon" data-ic="cloud"></span>
               <div>
-                <div class="node-title"><span class="sdot ok"></span>Cisco Intersight</div>
+                <div class="node-title"><span class="sdot ok"></span>Vantage</div>
                 <div class="node-sub">SaaS Cloud Platform</div>
               </div>
             </div>
@@ -78,7 +78,7 @@ const MARKUP = `
             <div class="node-head">
               <span class="node-icon" data-ic="appliance"></span>
               <div>
-                <div class="node-title"><span class="sdot na" id="dot-appliance"></span>Intersight Virtual Appliance</div>
+                <div class="node-title"><span class="sdot na" id="dot-appliance"></span>Vantage Virtual Appliance</div>
                 <div class="node-sub">Private / Connected Mode</div>
               </div>
             </div>
@@ -87,7 +87,7 @@ const MARKUP = `
             <div class="node-head">
               <span class="node-icon" data-ic="assist"></span>
               <div>
-                <div class="node-title"><span class="sdot na" id="dot-assist"></span>Intersight Assist</div>
+                <div class="node-title"><span class="sdot na" id="dot-assist"></span>Vantage Assist</div>
                 <div class="node-sub">Integration Gateway</div>
               </div>
             </div>
@@ -140,10 +140,10 @@ export default function mountArchitecture(root, DATA, HEALTH) {
   const fiPortName = l => `${l.fi_slot}/${portLabel(l)}`;
   const linkKey = l => `${l.fi}|${l.fi_slot}|${l.fi_aggr || 0}|${l.fi_port}`;
 
-  const state = { domain: DATA.domains[0]?.name, selected: { type: 'intersight' } };
+  const state = { domain: DATA.domains[0]?.name, selected: { type: 'vantage' } };
   const dom = () => DATA.domains.find(d => d.name === state.domain) || DATA.domains[0];
 
-  /* Live Intersight alarm health (same noise-filtered source as the AI
+  /* Live Vantage alarm health (same noise-filtered source as the AI
      Diagnostics FI/Chassis tabs), keyed by device serial. Optional — the
      diagram renders from topology data alone when HEALTH wasn't loaded. */
   const healthBySerial = new Map();
@@ -174,11 +174,11 @@ export default function mountArchitecture(root, DATA, HEALTH) {
     <span style="color:var(--${a.severity === 'Critical' || a.severity === 'Major' ? 'crit' : 'warn'})">●</span>
     <b>${esc(a.severity)}</b> · ${esc(a.affected_mo || '')} — ${esc(a.description)}</p>`;
   const alarmSection = ah => ah === null ? '' : `
-    <div class="psec"><h3>Active Intersight alarms</h3>${
+    <div class="psec"><h3>Active Vantage alarms</h3>${
       ah.alarms.length
         ? ah.alarms.slice(0, 5).map(alarmLine).join('') +
           (ah.alarms.length > 5 ? `<p style="font-size:12px">…and ${ah.alarms.length - 5} more in the AI Diagnostics tab.</p>` : '')
-        : '<p>None — matches the AI Diagnostics view. Live from Intersight, filtered to actionable alarms (unused ports don’t count).</p>'
+        : '<p>None — matches the AI Diagnostics view. Live from Vantage, filtered to actionable alarms (unused ports don’t count).</p>'
     }</div>`;
 
   function stats(d) {
@@ -252,7 +252,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
   }
   function chipClass(fp, fab) {
     // red is reserved for a real cabled link that is down; a server-configured
-    // port with no peer in Intersight is "configured, not connected" (outline)
+    // port with no peer in Vantage is "configured, not connected" (outline)
     const fabLower = fab.toLowerCase();
     const laneKey = p => `${fab}|${p.slot}|${p.aggr || 0}|${p.port}`;
     const linkedLanes = fp.lanes.filter(p => linksByFiPort.has(laneKey(p)));
@@ -451,7 +451,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
     const paths = [];
     const P = (dAttr, cls, meta) => paths.push({ d: dAttr, cls, meta });
 
-    const cloud = $('#n-intersight'), app = $('#n-appliance'), asst = $('#n-assist');
+    const cloud = $('#n-vantage'), app = $('#n-appliance'), asst = $('#n-assist');
     const fiA = $('#n-fi-A'), fiB = $('#n-fi-B');
     if (cloud && app && asst) {
       const c = R(cloud), a = R(app), s = R(asst);
@@ -522,7 +522,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
       let lit = null;
       if (sel.type === 'fi') lit = meta.fab === sel.fab;
       else if (sel.type === 'chassis') lit = meta.chassis === String(sel.chassis);
-      else if (sel.type === 'intersight' || sel.type === 'appliance' || sel.type === 'assist') lit = meta.kind === 'mgmt';
+      else if (sel.type === 'vantage' || sel.type === 'appliance' || sel.type === 'assist') lit = meta.kind === 'mgmt';
       if (lit === null) return;
       w.classList.add(lit ? 'lit' : 'dim');
     });
@@ -540,7 +540,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
     <div class="psec">
       <h3>Data as of</h3>
       <div class="kv"><span class="v">${esc(fmtWhen(DATA.generated_at))}</span><span class="snap-pill"><span class="dot"></span>CACHED</span></div>
-      <div class="hint">Topology is cached for 24 hours — use the Refresh button (top right) to pull live from Intersight.</div>
+      <div class="hint">Topology is cached for 24 hours — use the Refresh button (top right) to pull live from Vantage.</div>
     </div>`;
 
   function panelFor() {
@@ -586,7 +586,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
         : 'Healthy';
       return panelShell('fi', `Fabric Interconnect ${fi.id}`, `${esc(fi.model)} · ${esc(fi.serial)}`, `
         ${statusBlock(fiDot, fiWord,
-          `${myLinks.length - down.length}/${myLinks.length} server links up · traffic evacuation ${esc(fi.oper_evac_state || 'off')}${ah ? ` · ${ah.alarms.length} live Intersight alarm${ah.alarms.length === 1 ? '' : 's'}` : ''}`)}
+          `${myLinks.length - down.length}/${myLinks.length} server links up · traffic evacuation ${esc(fi.oper_evac_state || 'off')}${ah ? ` · ${ah.alarms.length} live Vantage alarm${ah.alarms.length === 1 ? '' : 's'}` : ''}`)}
         ${alarmSection(ah)}
         <div class="psec"><h3>What it is</h3><p>${NODE_INFO.fi.desc}</p></div>
         <div class="psec"><h3>Details</h3>
@@ -622,7 +622,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
         </div>`).join('');
       return panelShell('chassis', `Chassis ${c.chassis_id}`, `${esc(c.model)} · ${esc(c.name)}`, `
         ${statusBlock(h.dot, h.dot === 'ok' ? 'Online' : h.text,
-          `Oper state ${esc(c.oper_state || 'unknown')} · management path via FI ${esc(c.connection_status || '?')}${h.down ? ` · ${h.down} fabric link${h.down === 1 ? '' : 's'} down` : ''}${h.ah ? ` · ${h.ah.alarms.length} live Intersight alarm${h.ah.alarms.length === 1 ? '' : 's'}` : ''}`)}
+          `Oper state ${esc(c.oper_state || 'unknown')} · management path via FI ${esc(c.connection_status || '?')}${h.down ? ` · ${h.down} fabric link${h.down === 1 ? '' : 's'} down` : ''}${h.ah ? ` · ${h.ah.alarms.length} live Vantage alarm${h.ah.alarms.length === 1 ? '' : 's'}` : ''}`)}
         ${alarmSection(h.ah ?? null)}
         <div class="psec"><h3>What it is</h3><p>${NODE_INFO.chassis.desc}</p></div>
         <div class="psec"><h3>Resources</h3>
@@ -639,7 +639,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
     return panelDefault(d, s, g);
   }
   function panelDefault(d, s, g) {
-    const info = NODE_INFO.intersight;
+    const info = NODE_INFO.vantage;
     const issues = [];
     if (g.down) issues.push(`${g.down} fabric link${g.down === 1 ? '' : 's'} down`);
     if (g.chBad) issues.push(`${g.chBad} chassis degraded`);
@@ -683,7 +683,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
     $$('.node').forEach(n => n.classList.remove('selected'));
     const sel = state.selected;
     let el = null;
-    if (sel.type === 'intersight') el = $('#n-intersight');
+    if (sel.type === 'vantage') el = $('#n-vantage');
     else if (sel.type === 'appliance') el = $('#n-appliance');
     else if (sel.type === 'assist') el = $('#n-assist');
     else if (sel.type === 'fi') el = $(`#n-fi-${sel.fab}`);
@@ -726,7 +726,7 @@ export default function mountArchitecture(root, DATA, HEALTH) {
     else if (t === 'chassis') next = { type: 'chassis', chassis: node.dataset.chassis };
     else next = { type: t };
     const same = JSON.stringify(next) === JSON.stringify(state.selected);
-    state.selected = same ? { type: 'intersight' } : next;
+    state.selected = same ? { type: 'vantage' } : next;
     applySelection();
   });
   $('#canvas').addEventListener('keydown', e => {
@@ -750,10 +750,10 @@ export default function mountArchitecture(root, DATA, HEALTH) {
   const domainSel = $('#domainSelect');
   domainSel.innerHTML = DATA.domains.map(d => `<option value="${esc(d.name)}">${esc(d.name)} (${esc(d.datacenter)})</option>`).join('');
   domainSel.value = state.domain;
-  domainSel.addEventListener('change', () => { state.domain = domainSel.value; state.selected = { type: 'intersight' }; renderAll(); });
+  domainSel.addEventListener('change', () => { state.domain = domainSel.value; state.selected = { type: 'vantage' }; renderAll(); });
 
   $('#snapTime').textContent = 'Data as of ' + fmtWhen(DATA.generated_at);
-  $('#pagefoot').textContent = `Read-only view of ${DATA.domains.length} UCS domains from the Intersight API · data as of ${fmtWhen(DATA.generated_at)} · cached for 24 hours — Refresh pulls it live.`;
+  $('#pagefoot').textContent = `Read-only view of ${DATA.domains.length} UCS domains from the Vantage API · data as of ${fmtWhen(DATA.generated_at)} · cached for 24 hours — Refresh pulls it live.`;
 
   let resizeRaf = 0;
   const onResize = () => { cancelAnimationFrame(resizeRaf); resizeRaf = requestAnimationFrame(drawWires); };

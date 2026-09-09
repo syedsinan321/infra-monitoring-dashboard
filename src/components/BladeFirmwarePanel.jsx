@@ -332,7 +332,7 @@ const csvEscape = v => {
 
 /* Cluster-sectioned CSV (blank line between vCenter clusters). */
 function buildClusterCsv(rows) {
-  const lines = ['vCenter Cluster,Intersight Domain,Server Profile,Current Firmware'];
+  const lines = ['vCenter Cluster,Vantage Domain,Server Profile,Current Firmware'];
   let prevCluster = null;
   for (const r of rows) {
     if (prevCluster !== null && r.cluster !== prevCluster) lines.push('');
@@ -426,7 +426,7 @@ function BladeFirmwarePanel() {
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {data
                   ? `${data.total_blades} blades · ${data.firmware_groups?.length || 0} distinct version${data.firmware_groups?.length !== 1 ? 's' : ''} · EOL & bug data: Cisco bulletins + IMM release notes`
-                  : 'Loading firmware data from Intersight…'}
+                  : 'Loading firmware data from Vantage…'}
               </p>
             </div>
           </div>
@@ -462,7 +462,7 @@ function BladeFirmwarePanel() {
         {loading && !data && (
           <div className="flex items-center gap-3 py-4 text-slate-500 dark:text-slate-400">
             <RefreshCw className="h-4 w-4 animate-spin" />
-            <span className="text-sm">Fetching firmware data from Intersight…</span>
+            <span className="text-sm">Fetching firmware data from Vantage…</span>
           </div>
         )}
 
@@ -477,7 +477,7 @@ function BladeFirmwarePanel() {
           <>
             {data.firmware_groups?.length === 0 ? (
               <div className="text-sm text-slate-500 dark:text-slate-400 py-4 text-center">
-                No firmware data available. Ensure blades are managed in Intersight.
+                No firmware data available. Ensure blades are managed in Vantage.
               </div>
             ) : (
               <>

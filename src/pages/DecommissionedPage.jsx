@@ -16,7 +16,7 @@ const FLAGS = {
     label: 'Stale — slot reused',
     variant: 'critical',
     icon: AlertTriangle,
-    blurb: 'A different blade now sits in this slot. The old record was never removed from Intersight.',
+    blurb: 'A different blade now sits in this slot. The old record was never removed from Vantage.',
   },
   recommissioned: {
     label: 'Stale — serial active',
@@ -112,7 +112,7 @@ export default function DecommissionedPage() {
           <KpiCard
             label="Stale records"
             value={summary.stale ?? 0}
-            sub={summary.stale ? 'Need cleanup in Intersight' : 'None — records are current'}
+            sub={summary.stale ? 'Need cleanup in Vantage' : 'None — records are current'}
             subTone={summary.stale ? 'negative' : 'positive'}
             valueClass={summary.stale ? 'text-red-500 dark:text-red-400' : ''}
           />
@@ -135,7 +135,7 @@ export default function DecommissionedPage() {
                 </p>
                 <p className="mt-1 text-[13px]">
                   A decommissioned blade still occupies a slot that live hardware has since taken over.
-                  Until the record is removed from Intersight it keeps surfacing in hardware lookups as
+                  Until the record is removed from Vantage it keeps surfacing in hardware lookups as
                   though it were still installed.
                 </p>
               </div>

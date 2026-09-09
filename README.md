@@ -23,31 +23,39 @@ connected monitoring tool.
 
 ---
 
-## Features
+## Pages
 
-- **Overview dashboard**: chassis, blade slot utilization, fabric interconnect pairs
-- **Inventory & server profiles**: hardware catalog and profile assignments
-- **Firmware tracking**: blade firmware versions and compliance
-- **Host diagnostics**: sample crash/log analysis reports
-- **Audit log**: sample activity history
-- **Architecture view**: pan/zoom topology renderer
-- **Light/dark theming**
+**Dashboard** — Fleet-wide overview: infrastructure health (blade power, hardware state, vCenter health) by site, blade/chassis utilization, fabric interconnect pairs, and a bulk lookup to check whether a device exists anywhere in the fleet.
 
-## Running locally
+**Host Lifecycle / Hosts** — Host inventory with full lifecycle history — first seen, age, and removals across vCenter.
 
-```bash
-npm install
-npm run dev
-```
+**Inventory** — Spare hardware on hand (blades, DIMMs, drives, PSUs, NICs, fabric interconnects, CPUs), tracked outside the management platform and searchable via bulk lookup.
 
-The app will be available at `http://localhost:5173`.
+**Decommissioned** — Blades decommissioned out of a UCS domain, checked against live inventory to catch stale records.
 
-## Build
+**Blade Firmware** — Running firmware versions across all blades, broken out by domain and model.
 
-```bash
-npm run build
-npm run preview
-```
+**ESXi Versions** — ESXi build/version compliance across hosts and clusters.
+
+**VMware Tools** — VMware Tools version status across VMs and datacenters.
+
+**OpenShift Licensing** — Worker node and cluster licensing coverage.
+
+**Backup Status** — Backup health and compliance for Windows and RHEL VMs.
+
+**VM Crash Reports** — Identify VMs affected by a host failure — crashed, vMotioned, or powered off.
+
+**AI Diagnostics** — AI-assisted analysis of servers, fabric interconnects, and chassis, plus a usage/cost breakdown for the underlying model calls.
+
+**Reboot CIMC** — Guided remote reboot workflow for hosts with a server profile attached.
+
+**TPM Keys** — TPM recovery key lookup, gated behind a demo password.
+
+**Audit Log** — Who did what — reboots, TPM key operations, and deletions across the app.
+
+**Architecture** — Pan/zoom topology view of how the management platform connects to the fleet, from the cloud down to every chassis port.
+
+**Settings** — Live status of every platform this app integrates with.
 
 ## Deployment
 

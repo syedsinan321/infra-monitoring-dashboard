@@ -146,7 +146,7 @@ function RebootCimcPage() {
     setProgress(Object.fromEntries(confirmHosts.map(h => [h.moid, { state: 'pending' }])));
 
     // Sequential on purpose — clear per-host progress and no thundering herd
-    // against Intersight.
+    // against Vantage.
     for (const host of confirmHosts) {
       setProgress(prev => ({ ...prev, [host.moid]: { state: 'running' } }));
       try {
@@ -472,7 +472,7 @@ function RebootCimcPage() {
                     </p>
                     {okCount > 0 && (
                       <p className="text-xs text-slate-500 mt-1">
-                        Check Intersight — rebooted blades show as <span className="font-semibold">Discovering</span> in about 2–3 minutes.
+                        Check Vantage — rebooted blades show as <span className="font-semibold">Discovering</span> in about 2–3 minutes.
                       </p>
                     )}
                   </div>

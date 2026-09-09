@@ -423,7 +423,7 @@ function InventoryPage() {
     <>
       <PageHeader
         title="Inventory"
-        subtitle="Spare hardware on hand — tracked outside Intersight, searchable in Bulk lookup"
+        subtitle="Spare hardware on hand — tracked outside Vantage, searchable in Bulk lookup"
         actions={(
           <div className="flex items-center gap-2">
             <input
@@ -520,7 +520,7 @@ function InventoryPage() {
                   icon={Package}
                   title={items.length === 0 ? 'No spare hardware recorded' : 'Nothing matches your filters'}
                   hint={items.length === 0
-                    ? 'Track blades, DIMMs, FIs, drives — anything on hand that isn’t in Intersight yet.'
+                    ? 'Track blades, DIMMs, FIs, drives — anything on hand that isn’t in Vantage yet.'
                     : 'Try clearing the search or switching filters.'}
                 />
               </Card>

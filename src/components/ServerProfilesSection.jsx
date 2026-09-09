@@ -103,7 +103,7 @@ function ServerProfilesSection({ profiles, blades, chassis }) {
       <div className="divide-y divide-white/10 dark:divide-white/5">
         {profiles.length === 0 ? (
           <div className="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
-            No server profiles found in your Intersight environment
+            No server profiles found in your Vantage environment
           </div>
         ) : (
           sortedChassisNames.map((chassisName) => {

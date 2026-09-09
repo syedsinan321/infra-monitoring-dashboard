@@ -27,3 +27,6 @@ yarn-error.log*
 
 # Local scratch
 *.bak
+
+# Claude Code session state
+.claude/

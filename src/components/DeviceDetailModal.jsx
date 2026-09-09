@@ -98,7 +98,7 @@ function AllClear({ children }) {
 }
 
 /**
- * Live errors/alerts for the host: current Intersight alarms on the blade +
+ * Live errors/alerts for the host: current Vantage alarms on the blade +
  * triggered vCenter alarms. Fetched when the card opens; fails soft per side.
  */
 function AlertsSection({ device }) {
@@ -123,7 +123,7 @@ function AlertsSection({ device }) {
       {!alerts && !error && (
         <p className="flex items-center gap-2 text-sm text-slate-500 py-2">
           <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-          Checking Intersight & vCenter…
+          Checking Vantage & vCenter…
         </p>
       )}
       {error && (
@@ -131,16 +131,16 @@ function AlertsSection({ device }) {
       )}
       {alerts && (
         <>
-          <GroupLabel>Intersight</GroupLabel>
-          {alerts.intersight_error ? (
-            <p className="text-sm text-amber-500 dark:text-amber-400">Lookup failed: {alerts.intersight_error}</p>
-          ) : alerts.intersight === null ? (
-            <p className="text-sm text-slate-500">Not managed by Intersight.</p>
-          ) : alerts.intersight.alarms.length === 0 ? (
-            <AllClear>No active Intersight alarms</AllClear>
+          <GroupLabel>Vantage</GroupLabel>
+          {alerts.vantage_error ? (
+            <p className="text-sm text-amber-500 dark:text-amber-400">Lookup failed: {alerts.vantage_error}</p>
+          ) : alerts.vantage === null ? (
+            <p className="text-sm text-slate-500">Not managed by Vantage.</p>
+          ) : alerts.vantage.alarms.length === 0 ? (
+            <AllClear>No active Vantage alarms</AllClear>
           ) : (
             <div className="space-y-2">
-              {alerts.intersight.alarms.map((a, i) => (
+              {alerts.vantage.alarms.map((a, i) => (
                 <div key={i} className="flex items-start gap-2.5 rounded-lg bg-white/5 border border-white/10 px-3 py-2">
                   <span className={`mt-0.5 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border flex-shrink-0 ${SEV_CHIP[a.severity] || SEV_CHIP.Info}`}>
                     {a.severity}
@@ -318,7 +318,7 @@ function DeviceDetailModal({ device, fis = [], onClose, onBack, onOpenDiagnostic
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
                   <div>
                     <Row label="Server Profile" value={device.profile || '— (no profile)'} />
-                    <Row label="Blade Name" value={device.vcenterOnly ? 'vCenter only — no Intersight blade' : device.blade} />
+                    <Row label="Blade Name" value={device.vcenterOnly ? 'vCenter only — no Vantage blade' : device.blade} />
                     <Row label="Blade Serial" value={device.serial} />
                     <Row label="Model" value={device.model} />
                     <Row label="Chassis / Slot" value={device.chassis ? `Chassis ${device.chassis} · Slot ${device.slot}` : null} />

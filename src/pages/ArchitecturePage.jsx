@@ -50,8 +50,8 @@ function ArchitecturePage() {
   return (
     <>
       <PageHeader
-        title="Cisco Intersight Architecture"
-        subtitle="How Intersight manages this environment — from the cloud down to every chassis port. Click any card for details."
+        title="Vantage Architecture"
+        subtitle="How Vantage manages this environment — from the cloud down to every chassis port. Click any card for details."
         actions={(
           <>
             {data?.generated_at && (
@@ -66,7 +66,7 @@ function ArchitecturePage() {
               icon={RefreshCw}
               loading={loading}
               onClick={() => load(true)}
-              title="Pull live topology from Intersight now (~10s)"
+              title="Pull live topology from Vantage now (~10s)"
             >
               Refresh
             </Button>
@@ -78,7 +78,7 @@ function ArchitecturePage() {
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
             <span className="ml-3 text-slate-500 dark:text-slate-400">
-              Loading topology from Intersight…
+              Loading topology from Vantage…
             </span>
           </div>
         )}
